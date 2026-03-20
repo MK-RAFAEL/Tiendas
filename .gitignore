@@ -1,0 +1,25 @@
+# Browser captures and temporary validation files
+*-dom.html
+chrome-dom.txt
+invoice-fix-dom.html
+verify-local-dom.html
+
+# Search / scraping scratch files
+bing-search-test.html
+google-search-test.html
+startpage-search-test.html
+yahoo-search-test.html
+brave-*.html
+temp-search-*.html
+sephora-face*.html
+sephora-rare-dom.html
+sephora-api-output.txt
+cookies.txt
+
+# Local preview images
+preview.png
+store-preview.png
+style-refresh-preview.png
+style-refresh-dom.html
+primer1.html
+primer2.html
