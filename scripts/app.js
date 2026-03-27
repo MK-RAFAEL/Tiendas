@@ -3,6 +3,16 @@ const productMap = new Map(products.map((product) => [product.id, product]));
 const storageKey = "makeupByLalaStoreState";
 let catalogVisibleCount = 24;
 let catalogSearchDebounceId = 0;
+let checkoutInputDebounceId = 0;
+let pricingCacheKey = "";
+let pricingCacheValue = null;
+const performanceMode = {
+  lite: Boolean(
+    navigator.connection?.saveData
+    || (typeof navigator.deviceMemory === "number" && navigator.deviceMemory <= 4)
+    || (typeof navigator.hardwareConcurrency === "number" && navigator.hardwareConcurrency <= 4)
+  )
+};
 
 const shippingCountries = [
   {
@@ -576,6 +586,8 @@ function loadState() {
 const state = loadState();
 
 function saveState() {
+  invalidatePricingCache();
+
   const payload = {
     activeScreen: state.activeScreen,
     filters: structuredClone(state.filters),
@@ -608,7 +620,9 @@ function showToast(message) {
   }, 2800);
 }
 function createSparkles(originElement) {
-  if (!originElement) return;
+  if (!originElement || performanceMode.lite || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    return;
+  }
 
   const rect = originElement.getBoundingClientRect();
   const amount = 12;
@@ -640,16 +654,10 @@ function setActiveScreen(screenId) {
     element.classList.add("is-visible");
   });
 
-  if (screenId === "catalogScreen") {
-    renderCatalog(true);
-  }
-
-  if (screenId === "lovesScreen") {
-    renderLoves(true);
-  }
+  renderVisibleScreenContent(true);
 
   saveState();
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  window.scrollTo({ top: 0, behavior: performanceMode.lite ? "auto" : "smooth" });
 }
 
 function setCategoryFilter(category) {
@@ -673,6 +681,7 @@ function clearFilters() {
 }
 
 function getCatalogBatchSize() {
+  if (performanceMode.lite) return window.innerWidth <= 680 ? 8 : 16;
   return window.innerWidth <= 680 ? 12 : 24;
 }
 
@@ -683,6 +692,76 @@ function resetCatalogVisibleCount() {
 function showMoreCatalogProducts() {
   catalogVisibleCount += getCatalogBatchSize();
   renderCatalog(true);
+}
+
+function invalidatePricingCache() {
+  pricingCacheKey = "";
+  pricingCacheValue = null;
+}
+
+function getPricingStateKey() {
+  return JSON.stringify({
+    cart: state.cart,
+    country: state.checkout.customerCountry,
+    shippingMethod: state.checkout.shippingMethod,
+    paymentMethod: state.checkout.paymentMethod,
+    promoCode: state.checkout.promoCode,
+    appliedPromoCode: state.checkout.appliedPromoCode,
+    applyBeautyCash: state.checkout.applyBeautyCash,
+    sampleIds: state.checkout.sampleIds,
+    points: state.loyalty.points,
+    tier: state.loyalty.tier
+  });
+}
+
+function renderVisibleScreenContent(force = false) {
+  switch (state.activeScreen) {
+    case "catalogScreen":
+      renderCatalog(force);
+      break;
+    case "lovesScreen":
+      renderLoves(force);
+      break;
+    case "cartScreen":
+      renderCart(force);
+      break;
+    case "checkoutScreen":
+      renderCheckoutPerks(force);
+      renderCheckoutSummary(force);
+      break;
+    case "invoiceScreen":
+      renderInvoice(force);
+      break;
+    case "historyScreen":
+      renderHistory(force);
+      break;
+    default:
+      break;
+  }
+}
+
+function renderStoreChrome() {
+  updateHeaderMetrics();
+  renderLoyaltyPanels();
+  renderHistorySummary();
+}
+
+function scheduleCheckoutRefresh(immediate = false) {
+  clearTimeout(checkoutInputDebounceId);
+
+  const refresh = () => {
+    saveState();
+    renderStoreChrome();
+    renderVisibleScreenContent();
+    renderQuickView();
+  };
+
+  if (immediate) {
+    refresh();
+    return;
+  }
+
+  checkoutInputDebounceId = window.setTimeout(refresh, performanceMode.lite ? 220 : 120);
 }
 
 function applyFiltersAndSort() {
@@ -778,7 +857,9 @@ function toggleLove(productId, triggerElement) {
   }
 
   saveState();
-  renderAll();
+  renderStoreChrome();
+  renderVisibleScreenContent();
+  renderQuickView();
 }
 
 function getSelectedSamples() {
@@ -800,7 +881,9 @@ function toggleSample(sampleId) {
 
   markOrderChanged();
   saveState();
-  renderAll();
+  renderStoreChrome();
+  renderVisibleScreenContent();
+  renderQuickView();
 }
 
 function getCartItemsDetailed() {
@@ -932,6 +1015,11 @@ function getShippingBase(subtotalAfterMerchDiscounts) {
 }
 
 function getPricingSummary() {
+  const cacheKey = getPricingStateKey();
+  if (pricingCacheKey === cacheKey && pricingCacheValue) {
+    return pricingCacheValue;
+  }
+
   const items = getCartItemsDetailed();
   const itemCount = items.reduce((sum, item) => sum + item.qty, 0);
   const subtotal = roundCurrency(items.reduce((sum, item) => sum + item.baseLineTotal, 0));
@@ -953,7 +1041,7 @@ function getPricingSummary() {
     ? Math.max(0, Math.floor((subtotalAfterItemSavings - promoSavings - rewardSavings) * getTierMultiplier(state.loyalty.tier)))
     : 0;
 
-  return {
+  pricingCacheValue = {
     items,
     itemCount,
     subtotal,
@@ -972,6 +1060,9 @@ function getPricingSummary() {
     pointsEarned,
     sampleSummary: getSelectedSamples().length ? getSelectedSamples().map((sample) => sample.name).join(" | ") : "Sin muestras"
   };
+
+  pricingCacheKey = cacheKey;
+  return pricingCacheValue;
 }
 
 function getItemCount() {
@@ -1161,6 +1252,8 @@ function renderLoyaltyPanels() {
 }
 
 function markOrderChanged() {
+  invalidatePricingCache();
+
   if (state.invoice.status === "Paid" || state.invoice.snapshot) {
     state.checkout.invoiceNumber = generateInvoiceNumber();
     state.invoice.createdAt = "";
@@ -1207,7 +1300,9 @@ function addToCart(productId, triggerElement, options = {}) {
   recordProductView(productId, false);
   markOrderChanged();
   saveState();
-  renderAll();
+  renderStoreChrome();
+  renderVisibleScreenContent();
+  renderQuickView();
   createSparkles(triggerElement);
   showToast(`${product.brand} agregado al carrito.`);
 }
@@ -1223,7 +1318,9 @@ function changeQuantity(productId, delta) {
 
   markOrderChanged();
   saveState();
-  renderAll();
+  renderStoreChrome();
+  renderVisibleScreenContent();
+  renderQuickView();
 }
 
 function setAutoReplenish(productId, enabled) {
@@ -1234,24 +1331,32 @@ function setAutoReplenish(productId, enabled) {
   item.autoReplenish = Boolean(enabled);
   markOrderChanged();
   saveState();
-  renderAll();
+  renderStoreChrome();
+  renderVisibleScreenContent();
+  renderQuickView();
 }
 
 function removeItem(productId) {
   state.cart = state.cart.filter((entry) => entry.id !== productId);
   markOrderChanged();
   saveState();
-  renderAll();
+  renderStoreChrome();
+  renderVisibleScreenContent();
+  renderQuickView();
 }
 
 function clearCartContents() {
   state.cart = [];
   markOrderChanged();
   saveState();
-  renderAll();
+  renderStoreChrome();
+  renderVisibleScreenContent();
+  renderQuickView();
 }
 
-function renderCart() {
+function renderCart(force = false) {
+  if (!force && state.activeScreen !== "cartScreen") return;
+
   const pricing = getPricingSummary();
   const items = pricing.items;
 
@@ -1328,7 +1433,9 @@ function renderSamples() {
   attachImageFallbacks(dom.samplesGrid);
 }
 
-function renderCheckoutPerks() {
+function renderCheckoutPerks(force = false) {
+  if (!force && state.activeScreen !== "checkoutScreen") return;
+
   const pricing = getPricingSummary();
   const enteredCode = normalizeCode(state.checkout.promoCode);
   const previewPromo = getPromoEvaluation(pricing.items, enteredCode);
@@ -1347,7 +1454,9 @@ function renderCheckoutPerks() {
   renderSamples();
 }
 
-function renderCheckoutSummary() {
+function renderCheckoutSummary(force = false) {
+  if (!force && state.activeScreen !== "checkoutScreen") return;
+
   const pricing = getPricingSummary();
   const items = pricing.items;
   const shippingMeta = getShippingMeta(state.checkout.shippingMethod);
@@ -1476,6 +1585,7 @@ function syncStateFromForm() {
   state.checkout.giftMessage = checkoutFields.giftMessage.value;
   state.checkout.promoCode = normalizeCode(checkoutFields.promoCode.value);
   state.checkout.applyBeautyCash = checkoutFields.applyBeautyCash.checked;
+  invalidatePricingCache();
 }
 
 function buildInvoiceSnapshot() {
@@ -1556,10 +1666,13 @@ function restoreCartFromInvoiceSnapshot() {
     .map(normalizeCartEntry)
     .filter(Boolean);
 
+  invalidatePricingCache();
   return state.cart.length > 0;
 }
 
-function renderInvoice() {
+function renderInvoice(force = false) {
+  if (!force && state.activeScreen !== "invoiceScreen") return;
+
   const invoice = getInvoiceDocumentData();
 
   dom.invoicePreviewNumber.textContent = invoice.invoiceNumber || "MBL-0000";
@@ -1628,8 +1741,9 @@ function renderHistorySummary() {
   dom.dbPaidCount.textContent = String(paidOrders);
 }
 
-function renderHistory() {
+function renderHistory(force = false) {
   renderHistorySummary();
+  if (!force && state.activeScreen !== "historyScreen") return;
 
   if (!state.orderHistory.length) {
     dom.historyList.innerHTML = `
@@ -1743,15 +1857,8 @@ function closeQuickView() {
 }
 
 function renderAll() {
-  updateHeaderMetrics();
-  renderLoyaltyPanels();
-  renderCatalog();
-  renderLoves();
-  renderCart();
-  renderCheckoutPerks();
-  renderCheckoutSummary();
-  renderInvoice();
-  renderHistory();
+  renderStoreChrome();
+  renderVisibleScreenContent(true);
   renderQuickView();
 }
 function applyLoadedState(loadedState, options = {}) {
@@ -1798,6 +1905,7 @@ function applyLoadedState(loadedState, options = {}) {
     : sampleCatalog.slice(0, 2).map((sample) => sample.id);
   state.checkout.applyBeautyCash = Boolean(state.checkout.applyBeautyCash);
   state.quickViewProductId = "";
+  invalidatePricingCache();
 }
 
 async function refreshHistory() {
@@ -1866,8 +1974,8 @@ async function restoreOrderRecord(orderId, targetScreen = "historyScreen") {
 
   syncCheckoutForm();
   saveState();
-  renderAll();
   setActiveScreen(targetScreen);
+  renderQuickView();
   showToast(`Venta ${record.invoiceNumber} recuperada.`);
 }
 
@@ -1898,7 +2006,7 @@ async function syncStateFromDatabase() {
   state.activeScreen = "homeScreen";
 
   await refreshHistory();
-  renderAll();
+  renderStoreChrome();
   setActiveScreen("homeScreen");
 }
 
@@ -1953,7 +2061,6 @@ async function createInvoice(options = {}) {
   }
 
   saveState();
-  renderAll();
   await persistCurrentOrderRecord();
   setActiveScreen("invoiceScreen");
 
@@ -1973,7 +2080,8 @@ function applyPromoFromInput(triggerElement) {
     state.checkout.appliedPromoCode = "";
     markOrderChanged();
     saveState();
-    renderAll();
+    renderStoreChrome();
+    renderVisibleScreenContent();
     showToast("Ingresa un codigo promocional antes de aplicarlo.");
     return;
   }
@@ -1982,7 +2090,8 @@ function applyPromoFromInput(triggerElement) {
   if (!preview.valid) {
     state.checkout.appliedPromoCode = "";
     saveState();
-    renderAll();
+    renderStoreChrome();
+    renderVisibleScreenContent();
     showToast(preview.message);
     return;
   }
@@ -1990,7 +2099,8 @@ function applyPromoFromInput(triggerElement) {
   state.checkout.appliedPromoCode = code;
   markOrderChanged();
   saveState();
-  renderAll();
+  renderStoreChrome();
+  renderVisibleScreenContent();
   createSparkles(triggerElement);
   showToast(`${code} aplicado correctamente.`);
 }
@@ -2001,7 +2111,8 @@ function clearPromoCode(triggerElement) {
   checkoutFields.promoCode.value = "";
   markOrderChanged();
   saveState();
-  renderAll();
+  renderStoreChrome();
+  renderVisibleScreenContent();
   if (triggerElement) createSparkles(triggerElement);
   showToast("Codigo promocional limpiado.");
 }
@@ -2022,7 +2133,8 @@ async function simulatePayment(triggerElement) {
     state.invoice.snapshot.loyaltyTier = state.loyalty.tier;
   }
   saveState();
-  renderAll();
+  renderStoreChrome();
+  renderVisibleScreenContent(true);
   await persistCurrentOrderRecord();
   createSparkles(triggerElement);
   showToast("Pago marcado como completado.");
@@ -2432,7 +2544,7 @@ function bindEvents() {
     catalogSearchDebounceId = window.setTimeout(() => {
       saveState();
       renderCatalog(true);
-    }, 140);
+    }, performanceMode.lite ? 220 : 140);
   });
 
   dom.catalogSort.addEventListener("change", (event) => {
@@ -2467,15 +2579,13 @@ function bindEvents() {
   dom.checkoutForm.addEventListener("input", () => {
     syncStateFromForm();
     markOrderChanged();
-    saveState();
-    renderAll();
+    scheduleCheckoutRefresh(false);
   });
 
   dom.checkoutForm.addEventListener("change", () => {
     syncStateFromForm();
     markOrderChanged();
-    saveState();
-    renderAll();
+    scheduleCheckoutRefresh(true);
   });
 
   dom.applyPromoCode.addEventListener("click", (event) => {
@@ -2507,7 +2617,8 @@ function bindEvents() {
     if (!state.cart.length) {
       restoreCartFromInvoiceSnapshot();
       saveState();
-      renderAll();
+      renderStoreChrome();
+      renderVisibleScreenContent();
     }
     setActiveScreen("checkoutScreen");
   });
@@ -2544,12 +2655,13 @@ function bindEvents() {
         catalogVisibleCount = Math.max(catalogVisibleCount, getCatalogBatchSize());
         renderCatalog(true);
       }
-    }, 150);
+    }, performanceMode.lite ? 240 : 150);
   });
 }
 
 function hydrateUIFromState() {
   state.activeScreen = "homeScreen";
+  document.body.classList.toggle("performance-lite", performanceMode.lite);
   resetCatalogVisibleCount();
   populateCountryOptions();
   syncCheckoutForm();
