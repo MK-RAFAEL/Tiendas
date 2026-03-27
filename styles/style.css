@@ -612,9 +612,17 @@ textarea {
   gap: 18px;
 }
 
+.catalog-grid-footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 22px;
+}
+
 .product-card {
   display: grid;
   min-height: 100%;
+  content-visibility: auto;
+  contain-intrinsic-size: 520px;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(255, 246, 249, 0.98));
   border-radius: 30px;
   border: 1px solid rgba(112, 83, 92, 0.08);
@@ -2797,6 +2805,109 @@ body::after {
   .brand-ribbon span::before {
     animation: none;
     transition: none;
+  }
+}
+
+@media (hover: none), (pointer: coarse), (max-width: 820px) {
+  .site-glow,
+  .sparkle {
+    display: none;
+  }
+
+  .promo-strip__track,
+  .site-glow,
+  .hero-media__card img,
+  .collection-card__media img,
+  .sidebar-card--image img,
+  .product-card__media img,
+  .product-card,
+  .quick-view,
+  .nav-pill,
+  .filter-chip,
+  .btn,
+  .icon-button,
+  .sample-option {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .promo-strip__track {
+    padding-left: 0;
+    white-space: normal;
+  }
+
+  .site-header,
+  .hero-panel,
+  .home-section,
+  .brand-ribbon,
+  .screen,
+  .card-surface,
+  .summary-card,
+  .feature-card,
+  .country-card,
+  .support-card,
+  .faq-item,
+  .invoice-paper,
+  .quick-view,
+  .product-card__badge,
+  .product-card__meta span,
+  .invoice-status,
+  .modal-backdrop {
+    backdrop-filter: none !important;
+  }
+
+  .product-card,
+  .product-card:hover,
+  .collection-card:hover,
+  .feature-card:hover,
+  .country-card:hover,
+  .support-card:hover,
+  .sample-option:hover,
+  .sample-option.is-selected,
+  .icon-button:hover,
+  .icon-button.is-active,
+  .nav-pill:hover,
+  .filter-chip:hover,
+  .btn:hover,
+  .hero-media__card:hover img,
+  .collection-card:hover .collection-card__media img,
+  .sidebar-card--image:hover img,
+  .product-card:hover .product-card__media img {
+    transform: none !important;
+  }
+
+  .product-card,
+  .screen,
+  .summary-card,
+  .feature-card,
+  .card-surface,
+  .invoice-paper {
+    box-shadow: 0 14px 28px rgba(139, 79, 98, 0.1) !important;
+  }
+
+  .product-card__media,
+  .quick-view__media {
+    min-height: 220px;
+    background: linear-gradient(180deg, #fff 0%, #fbf4f6 100%) !important;
+  }
+
+  .product-card__media img,
+  .quick-view__media img {
+    height: 210px;
+    filter: none !important;
+  }
+
+  .hero-media {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: 170px;
+  }
+
+  .hero-media__card--tall {
+    grid-row: auto;
+  }
+
+  .hero-media__card:nth-child(n + 3) {
+    display: none;
   }
 }
 

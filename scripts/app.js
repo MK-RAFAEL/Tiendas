@@ -1,6 +1,8 @@
 ﻿const products = Array.isArray(window.catalogProducts) ? window.catalogProducts : [];
 const productMap = new Map(products.map((product) => [product.id, product]));
 const storageKey = "makeupByLalaStoreState";
+let catalogVisibleCount = 24;
+let catalogSearchDebounceId = 0;
 
 const shippingCountries = [
   {
@@ -181,6 +183,8 @@ const dom = {
   catalogSort: document.getElementById("catalogSort"),
   clearCatalogFilters: document.getElementById("clearCatalogFilters"),
   catalogSummary: document.getElementById("catalogSummary"),
+  catalogGridFooter: document.getElementById("catalogGridFooter"),
+  catalogLoadMore: document.getElementById("catalogLoadMore"),
   lovesGrid: document.getElementById("lovesGrid"),
   recentlyViewedGrid: document.getElementById("recentlyViewedGrid"),
   lovesCount: document.getElementById("lovesCount"),
@@ -636,12 +640,21 @@ function setActiveScreen(screenId) {
     element.classList.add("is-visible");
   });
 
+  if (screenId === "catalogScreen") {
+    renderCatalog(true);
+  }
+
+  if (screenId === "lovesScreen") {
+    renderLoves(true);
+  }
+
   saveState();
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 function setCategoryFilter(category) {
   state.filters.category = category;
+  resetCatalogVisibleCount();
   dom.categoryButtons.forEach((button) => {
     button.classList.toggle("is-active", button.dataset.categoryFilter === category);
   });
@@ -653,9 +666,23 @@ function clearFilters() {
   state.filters.category = "all";
   state.filters.search = "";
   state.filters.sort = "featured";
+  resetCatalogVisibleCount();
   dom.catalogSearch.value = "";
   dom.catalogSort.value = "featured";
   setCategoryFilter("all");
+}
+
+function getCatalogBatchSize() {
+  return window.innerWidth <= 680 ? 12 : 24;
+}
+
+function resetCatalogVisibleCount() {
+  catalogVisibleCount = getCatalogBatchSize();
+}
+
+function showMoreCatalogProducts() {
+  catalogVisibleCount += getCatalogBatchSize();
+  renderCatalog(true);
 }
 
 function applyFiltersAndSort() {
@@ -974,6 +1001,9 @@ function renderProductCard(product) {
           src="${product.image}"
           alt="${product.brand} ${product.name}"
           loading="lazy"
+          decoding="async"
+          width="480"
+          height="480"
           data-fallback="${product.fallbackImage}"
         >
         <span class="product-card__badge">${insights.primaryBadge}</span>
@@ -1030,9 +1060,14 @@ function renderProductCard(product) {
   `;
 }
 
-function renderCatalog() {
+function renderCatalog(force = false) {
+  if (!force && state.activeScreen !== "catalogScreen") return;
+
   const filteredProducts = applyFiltersAndSort();
-  dom.catalogSummary.textContent = `${filteredProducts.length} productos mostrados de ${products.length} disponibles.`;
+  const visibleProducts = filteredProducts.slice(0, catalogVisibleCount);
+  const remainingProducts = Math.max(0, filteredProducts.length - visibleProducts.length);
+
+  dom.catalogSummary.textContent = `${visibleProducts.length} productos visibles de ${filteredProducts.length} resultados y ${products.length} disponibles.`;
 
   if (!filteredProducts.length) {
     dom.catalogGrid.innerHTML = `
@@ -1043,14 +1078,29 @@ function renderCatalog() {
         <button class="btn btn--primary" type="button" id="emptyCatalogReset">Mostrar todo</button>
       </article>
     `;
+    if (dom.catalogGridFooter) {
+      dom.catalogGridFooter.hidden = true;
+    }
     return;
   }
 
-  dom.catalogGrid.innerHTML = filteredProducts.map((product) => renderProductCard(product)).join("");
+  dom.catalogGrid.innerHTML = visibleProducts.map((product) => renderProductCard(product)).join("");
   attachImageFallbacks(dom.catalogGrid);
+
+  if (dom.catalogGridFooter) {
+    dom.catalogGridFooter.hidden = remainingProducts === 0;
+  }
+
+  if (dom.catalogLoadMore) {
+    dom.catalogLoadMore.textContent = remainingProducts > 0
+      ? `Cargar ${Math.min(getCatalogBatchSize(), remainingProducts)} productos mas`
+      : "Catalogo completo";
+  }
 }
 
-function renderLoves() {
+function renderLoves(force = false) {
+  if (!force && state.activeScreen !== "lovesScreen") return;
+
   const lovedProducts = state.loves
     .map((id) => productMap.get(id))
     .filter(Boolean);
@@ -2376,18 +2426,24 @@ function bindEvents() {
   document.addEventListener("change", handleDocumentChange);
 
   dom.catalogSearch.addEventListener("input", (event) => {
+    clearTimeout(catalogSearchDebounceId);
     state.filters.search = event.target.value;
-    saveState();
-    renderCatalog();
+    resetCatalogVisibleCount();
+    catalogSearchDebounceId = window.setTimeout(() => {
+      saveState();
+      renderCatalog(true);
+    }, 140);
   });
 
   dom.catalogSort.addEventListener("change", (event) => {
     state.filters.sort = event.target.value;
+    resetCatalogVisibleCount();
     saveState();
-    renderCatalog();
+    renderCatalog(true);
   });
 
   dom.clearCatalogFilters.addEventListener("click", clearFilters);
+  dom.catalogLoadMore?.addEventListener("click", showMoreCatalogProducts);
 
   dom.goToCheckout.addEventListener("click", () => {
     if (!state.cart.length) {
@@ -2480,10 +2536,21 @@ function bindEvents() {
       closeQuickView();
     }
   });
+
+  window.addEventListener("resize", () => {
+    clearTimeout(window.resizeCatalogTimeoutId);
+    window.resizeCatalogTimeoutId = window.setTimeout(() => {
+      if (state.activeScreen === "catalogScreen") {
+        catalogVisibleCount = Math.max(catalogVisibleCount, getCatalogBatchSize());
+        renderCatalog(true);
+      }
+    }, 150);
+  });
 }
 
 function hydrateUIFromState() {
   state.activeScreen = "homeScreen";
+  resetCatalogVisibleCount();
   populateCountryOptions();
   syncCheckoutForm();
   dom.catalogSearch.value = state.filters.search;
