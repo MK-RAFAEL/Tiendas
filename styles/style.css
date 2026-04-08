@@ -502,6 +502,251 @@ textarea {
   font-weight: 600;
 }
 
+.discovery-grid,
+.brands-overview,
+.brand-showcase-grid,
+.offer-banner-grid,
+.concern-grid,
+.routine-grid {
+  display: grid;
+  gap: 18px;
+}
+
+.discovery-grid {
+  margin-top: 22px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.discovery-card,
+.stat-panel,
+.brand-showcase-card,
+.offer-banner,
+.concern-card,
+.routine-card {
+  display: grid;
+  gap: 14px;
+  padding: 22px;
+  min-height: 100%;
+  border-radius: 28px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(255, 244, 248, 0.96));
+  border: 1px solid rgba(112, 83, 92, 0.08);
+  box-shadow: 0 16px 34px rgba(139, 79, 98, 0.08);
+}
+
+.brands-overview {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.stat-panel span,
+.offer-shelf__header span,
+.brand-index-group__head span,
+.brand-showcase-card__meta span,
+.offer-banner__meta span,
+.concern-card__meta span,
+.brand-preview-list span,
+.concern-card__products span,
+.routine-list span {
+  color: var(--muted);
+}
+
+.stat-panel span,
+.offer-shelf__header span,
+.brand-index-group__head span {
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.stat-panel strong {
+  font-size: 1.9rem;
+  font-family: "Cormorant Garamond", serif;
+  color: var(--accent-deep);
+}
+
+.stat-panel small {
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.brand-showcase-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.brand-showcase-card__meta,
+.offer-banner__meta,
+.concern-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.brand-showcase-card__meta span,
+.offer-banner__meta span,
+.concern-card__meta span,
+.brand-preview-list span,
+.concern-card__products span {
+  padding: 8px 11px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(112, 83, 92, 0.08);
+  font-size: 0.82rem;
+}
+
+.brand-preview-list,
+.concern-card__products {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.brand-index {
+  display: grid;
+  gap: 18px;
+}
+
+.brand-index-group {
+  display: grid;
+  gap: 14px;
+}
+
+.brand-index-group__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.brand-index-group__head strong {
+  font-size: 1.5rem;
+  font-family: "Cormorant Garamond", serif;
+  color: var(--accent-deep);
+}
+
+.brand-chip-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.brand-chip {
+  display: grid;
+  gap: 6px;
+  padding: 14px 16px;
+  text-align: left;
+  border: 1px solid rgba(112, 83, 92, 0.08);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.94);
+  color: var(--text);
+  cursor: pointer;
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.brand-chip:hover {
+  transform: translateY(-2px);
+  border-color: rgba(201, 123, 146, 0.26);
+  box-shadow: 0 16px 30px rgba(139, 79, 98, 0.1);
+}
+
+.brand-chip span {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.brand-chip small {
+  color: var(--muted);
+}
+
+.offer-banner-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.offer-banner {
+  position: relative;
+  overflow: hidden;
+}
+
+.offer-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.3), transparent 38%);
+  pointer-events: none;
+}
+
+.offer-banner--soft {
+  background: linear-gradient(145deg, rgba(255, 241, 246, 0.98), rgba(255, 228, 236, 0.96));
+}
+
+.offer-banner--bright {
+  background: linear-gradient(145deg, rgba(255, 237, 243, 0.98), rgba(255, 214, 227, 0.96));
+}
+
+.offer-banner--gold {
+  background: linear-gradient(145deg, rgba(255, 245, 232, 0.98), rgba(255, 232, 214, 0.96));
+}
+
+.offer-banner--deep {
+  background: linear-gradient(145deg, rgba(242, 224, 230, 0.98), rgba(228, 204, 213, 0.96));
+}
+
+.offer-shelf {
+  display: grid;
+  gap: 18px;
+  margin-top: 26px;
+}
+
+.offer-shelf:first-of-type {
+  margin-top: 0;
+}
+
+.offer-shelf__header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.offer-shelf__header strong {
+  display: block;
+  margin-top: 6px;
+  font-size: 1.5rem;
+  font-family: "Cormorant Garamond", serif;
+}
+
+.offer-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.concern-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.concern-card__products {
+  gap: 8px;
+}
+
+.routine-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.routine-list {
+  margin: 0;
+  padding-left: 20px;
+  display: grid;
+  gap: 10px;
+}
+
+.routine-list li {
+  display: grid;
+  gap: 4px;
+  color: var(--muted);
+}
+
+.routine-list strong {
+  color: var(--text);
+}
+
 .catalog-layout {
   display: grid;
   grid-template-columns: 300px 1fr;
@@ -1297,6 +1542,18 @@ textarea {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .discovery-grid,
+  .brand-showcase-grid,
+  .offer-banner-grid,
+  .concern-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .brands-overview,
+  .routine-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .country-grid,
   .store-grid,
   .support-grid,
@@ -1327,7 +1584,12 @@ textarea {
   .hero-stats,
   .hero-media,
   .form-grid,
-  .invoice-grid {
+  .invoice-grid,
+  .brands-overview,
+  .brand-showcase-grid,
+  .offer-banner-grid,
+  .concern-grid,
+  .routine-grid {
     grid-template-columns: 1fr;
   }
 
@@ -1346,6 +1608,14 @@ textarea {
   .cart-item {
     grid-template-columns: 1fr;
     justify-items: start;
+  }
+
+  .offer-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .brand-chip-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -1392,7 +1662,13 @@ textarea {
   .support-grid,
   .shipping-overview,
   .history-card__grid,
-  .country-grid {
+  .country-grid,
+  .discovery-grid,
+  .brands-overview,
+  .brand-showcase-grid,
+  .offer-banner-grid,
+  .concern-grid,
+  .routine-grid {
     grid-template-columns: 1fr;
   }
 
@@ -1413,6 +1689,17 @@ textarea {
 
   .product-card__footer .btn {
     width: auto;
+  }
+
+  .offer-grid,
+  .brand-chip-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .offer-shelf__header,
+  .brand-index-group__head {
+    flex-direction: column;
+    align-items: start;
   }
 
   .cart-item__media {

@@ -180,9 +180,100 @@ const sampleCatalog = [
   }
 ];
 
+const concernDefinitions = [
+  {
+    id: "glow",
+    label: "Glow y luminosidad",
+    category: "makeup",
+    searchSeed: "blush",
+    description: "Ideal para tints, blushes, bronzers suaves e iluminacion que deja el rostro mas fresco.",
+    tags: ["Blush", "Radiance", "Complexion"],
+    keywords: ["blush", "glow", "radiant", "luminous", "highlighter", "bronzer", "illuminator", "skin tint"]
+  },
+  {
+    id: "hydration",
+    label: "Hidratacion profunda",
+    category: "skincare",
+    searchSeed: "moisturizer",
+    description: "Para rutinas con serum, cream, essence y barrera enfocadas en piel sedienta o tirante.",
+    tags: ["Barrier", "Moisture", "Skin ritual"],
+    keywords: ["moisturizer", "cream", "hydrating", "hyaluronic", "serum", "essence", "barrier", "dewy"]
+  },
+  {
+    id: "clarity",
+    label: "Acne y poros",
+    category: "skincare",
+    searchSeed: "acne",
+    description: "Seleccion guiada para blemishes, oil control, poros visibles y formulas clarificantes.",
+    tags: ["Clarifying", "Blemish", "Pore care"],
+    keywords: ["acne", "blemish", "clarifying", "clarify", "salicylic", "niacinamide", "pores", "oil"]
+  },
+  {
+    id: "spf",
+    label: "Proteccion solar diaria",
+    category: "suncare",
+    searchSeed: "sunscreen",
+    description: "SPF y cuidados diarios pensados para proteccion, retoque y feel ligero.",
+    tags: ["SPF", "Daily wear", "Sun care"],
+    keywords: ["sunscreen", "spf", "sun", "uv", "sunscreen", "sun care"]
+  },
+  {
+    id: "lips",
+    label: "Labios completos",
+    category: "lips",
+    searchSeed: "lip",
+    description: "Gloss, balm, oil, liners y tintes para armar una rutina de labios mas completa.",
+    tags: ["Gloss", "Balm", "Lip color"],
+    keywords: ["lip", "gloss", "balm", "liner", "oil", "lipstick", "tint", "mask"]
+  },
+  {
+    id: "eyes",
+    label: "Ojos y brows",
+    category: "eyes",
+    searchSeed: "mascara",
+    description: "Mascaras, paletas, liners y brow products para un edit mas definido de ojos.",
+    tags: ["Mascara", "Brows", "Palette"],
+    keywords: ["mascara", "brow", "eyeliner", "eyeshadow", "palette", "lashes", "eyes"]
+  }
+];
+
+const offerBannerConfig = [
+  {
+    code: "LALA10",
+    eyebrow: "Online offer",
+    title: "10% en el pedido beauty",
+    copy: "Activa un descuento general en compras elegibles y llévalo directo al checkout.",
+    accent: "soft"
+  },
+  {
+    code: "GLOW15",
+    eyebrow: "Skin event",
+    title: "15% en skincare y suncare",
+    copy: "Ideal para rutinas de hidratacion, protectores y reposiciones tipo skincare haul.",
+    accent: "bright"
+  },
+  {
+    code: "FREESHIP",
+    eyebrow: "Shipping perk",
+    title: "Envio gratis en standard",
+    copy: "Ahorro instantaneo cuando tu carrito alcanza el minimo y quieres dejarlo listo para despacho.",
+    accent: "gold"
+  },
+  {
+    code: "BUNDLE20",
+    eyebrow: "High cart reward",
+    title: "$20 off en carritos altos",
+    copy: "Pensado para compras grandes, reposiciones o mixes premium con varias categorias.",
+    accent: "deep"
+  }
+];
+
 const screenIds = [
   "homeScreen",
   "catalogScreen",
+  "brandsScreen",
+  "offersScreen",
+  "finderScreen",
   "lovesScreen",
   "cartScreen",
   "checkoutScreen",
@@ -275,6 +366,15 @@ const dom = {
   loyaltyTierLabel: document.getElementById("loyaltyTierLabel"),
   loyaltyPointsLabel: document.getElementById("loyaltyPointsLabel"),
   loyaltyRewardLabel: document.getElementById("loyaltyRewardLabel"),
+  brandsOverview: document.getElementById("brandsOverview"),
+  brandShowcaseGrid: document.getElementById("brandShowcaseGrid"),
+  brandIndex: document.getElementById("brandIndex"),
+  offerBannerGrid: document.getElementById("offerBannerGrid"),
+  offerUnder25Grid: document.getElementById("offerUnder25Grid"),
+  offerReplenishGrid: document.getElementById("offerReplenishGrid"),
+  offerLuxuryGrid: document.getElementById("offerLuxuryGrid"),
+  concernGrid: document.getElementById("concernGrid"),
+  routineGrid: document.getElementById("routineGrid"),
   applyPromoCode: document.getElementById("applyPromoCode"),
   clearPromoCode: document.getElementById("clearPromoCode"),
   quickViewModal: document.getElementById("quickViewModal"),
@@ -385,6 +485,108 @@ function normalizeCode(value) {
     .replace(/[^A-Z0-9]/g, "")
     .trim();
 }
+
+const productTextIndex = new Map(products.map((product) => [
+  product.id,
+  normalizeText([
+    product.brand,
+    product.name,
+    product.category,
+    product.categoryLabel,
+    product.subcategory,
+    product.description
+  ].join(" "))
+]));
+
+const productsByBrand = products.reduce((map, product) => {
+  if (!map.has(product.brand)) {
+    map.set(product.brand, []);
+  }
+  map.get(product.brand).push(product);
+  return map;
+}, new Map());
+
+productsByBrand.forEach((brandProducts) => {
+  brandProducts.sort((left, right) => left.featuredOrder - right.featuredOrder);
+});
+
+const brandInsights = [...productsByBrand.entries()]
+  .map(([brand, brandProducts]) => ({
+    brand,
+    count: brandProducts.length,
+    averagePrice: roundCurrency(
+      brandProducts.reduce((sum, product) => sum + product.price, 0) / brandProducts.length
+    ),
+    categories: [...new Set(brandProducts.map((product) => product.categoryLabel))],
+    spotlight: brandProducts[0],
+    products: brandProducts.slice(0, 4)
+  }))
+  .sort((left, right) => right.count - left.count || left.brand.localeCompare(right.brand));
+
+const brandInsightMap = new Map(brandInsights.map((insight) => [insight.brand, insight]));
+
+function getProductSearchText(product) {
+  return productTextIndex.get(product.id) || "";
+}
+
+function productMatchesKeywords(product, keywords = []) {
+  const haystack = getProductSearchText(product);
+  return keywords.some((keyword) => haystack.includes(normalizeText(keyword)));
+}
+
+function getCuratedProducts(predicate, limit = 4, fallbackCategory = "makeup") {
+  const matched = products.filter(predicate).sort((left, right) => left.featuredOrder - right.featuredOrder);
+  if (matched.length >= limit) {
+    return matched.slice(0, limit);
+  }
+
+  const fallback = products
+    .filter((product) => product.category === fallbackCategory)
+    .sort((left, right) => left.featuredOrder - right.featuredOrder);
+
+  return [...new Map([...matched, ...fallback].map((product) => [product.id, product])).values()].slice(0, limit);
+}
+
+const concernCollections = concernDefinitions.map((concern) => {
+  const matched = products
+    .filter((product) => {
+      if (concern.category && ![concern.category, "all"].includes(product.category) && !productMatchesKeywords(product, concern.keywords)) {
+        return false;
+      }
+      return productMatchesKeywords(product, concern.keywords) || product.category === concern.category;
+    })
+    .sort((left, right) => left.featuredOrder - right.featuredOrder);
+
+  const productsForConcern = matched.length >= 8
+    ? matched.slice(0, 8)
+    : getCuratedProducts((product) => product.category === concern.category, 8, concern.category);
+
+  return {
+    ...concern,
+    count: matched.length || productsForConcern.length,
+    products: productsForConcern
+  };
+});
+
+const concernCollectionMap = new Map(concernCollections.map((concern) => [concern.id, concern]));
+
+const offerCollections = {
+  under25: {
+    label: "Favoritos accesibles",
+    description: "Picks por debajo de $25 para compra agil, regalo o first try.",
+    products: getCuratedProducts((product) => product.price <= 25, 4, "makeup")
+  },
+  replenish: {
+    label: "Auto-Replenish",
+    description: "Skincare y suncare que encajan mejor en una rutina de recompra.",
+    products: getCuratedProducts((product) => isAutoReplenishEligible(product), 4, "skincare")
+  },
+  luxury: {
+    label: "Luxury splurge",
+    description: "Selecciones premium para carritos mas altos y una experiencia mas prestige.",
+    products: getCuratedProducts((product) => product.price >= 48, 4, "makeup")
+  }
+};
 
 function getCountryMeta(countryName) {
   return shippingCountries.find((country) => country.name === countryName) || shippingCountries[0];
@@ -674,12 +876,16 @@ function setActiveScreen(screenId) {
   window.scrollTo({ top: 0, behavior: performanceMode.lite ? "auto" : "smooth" });
 }
 
+function syncCategoryButtons() {
+  dom.categoryButtons.forEach((button) => {
+    button.classList.toggle("is-active", button.dataset.categoryFilter === state.filters.category);
+  });
+}
+
 function setCategoryFilter(category) {
   state.filters.category = category;
   resetCatalogVisibleCount();
-  dom.categoryButtons.forEach((button) => {
-    button.classList.toggle("is-active", button.dataset.categoryFilter === category);
-  });
+  syncCategoryButtons();
   saveState();
   renderCatalog();
 }
@@ -707,6 +913,89 @@ function clearFilters() {
   }
   dom.catalogSort.value = "featured";
   setCategoryFilter("all");
+}
+
+function openCatalogShortcut({
+  category = "all",
+  brand = "all",
+  search = "",
+  sort = "featured"
+} = {}, feedbackMessage = "") {
+  state.filters.category = category;
+  state.filters.brand = brand === "all" || availableBrandSet.has(brand) ? brand : "all";
+  state.filters.search = search;
+  state.filters.sort = sort;
+  resetCatalogVisibleCount();
+  syncCategoryButtons();
+
+  if (dom.catalogSearch) {
+    dom.catalogSearch.value = search;
+  }
+  if (dom.catalogBrandFilter) {
+    dom.catalogBrandFilter.value = state.filters.brand;
+  }
+  if (dom.catalogSort) {
+    dom.catalogSort.value = sort;
+  }
+
+  saveState();
+  setActiveScreen("catalogScreen");
+  if (feedbackMessage) {
+    showToast(feedbackMessage);
+  }
+}
+
+function openBrandExperience(brand) {
+  if (!brandInsightMap.has(brand)) return;
+  openCatalogShortcut({
+    category: "all",
+    brand,
+    search: "",
+    sort: "brand-asc"
+  }, `${brand} abierta en el catalogo.`);
+}
+
+function openConcernExperience(concernId) {
+  const concern = concernCollectionMap.get(concernId);
+  if (!concern) return;
+
+  openCatalogShortcut({
+    category: concern.category || "all",
+    brand: "all",
+    search: concern.searchSeed || "",
+    sort: "featured"
+  }, `Mostrando seleccion para ${concern.label}.`);
+}
+
+function openOfferCollection(offerKey) {
+  if (offerKey === "under25") {
+    openCatalogShortcut({
+      category: "all",
+      brand: "all",
+      search: "",
+      sort: "price-asc"
+    }, "Mostrando picks accesibles.");
+    return;
+  }
+
+  if (offerKey === "replenish") {
+    openCatalogShortcut({
+      category: "skincare",
+      brand: "all",
+      search: "",
+      sort: "featured"
+    }, "Mostrando favoritos de recompra.");
+    return;
+  }
+
+  if (offerKey === "luxury") {
+    openCatalogShortcut({
+      category: "all",
+      brand: "all",
+      search: "",
+      sort: "price-desc"
+    }, "Mostrando picks premium.");
+  }
 }
 
 function getCatalogBatchSize() {
@@ -747,6 +1036,15 @@ function renderVisibleScreenContent(force = false) {
   switch (state.activeScreen) {
     case "catalogScreen":
       renderCatalog(force);
+      break;
+    case "brandsScreen":
+      renderBrandsScreen(force);
+      break;
+    case "offersScreen":
+      renderOffersScreen(force);
+      break;
+    case "finderScreen":
+      renderFinderScreen(force);
       break;
     case "lovesScreen":
       renderLoves(force);
@@ -1246,6 +1544,157 @@ function populateBrandOptions() {
   dom.catalogBrandFilter.value = state.filters.brand === "all" || availableBrandSet.has(state.filters.brand)
     ? state.filters.brand
     : "all";
+}
+
+function renderBrandsScreen(force = false) {
+  if (!force && state.activeScreen !== "brandsScreen") return;
+  if (!dom.brandsOverview || !dom.brandShowcaseGrid || !dom.brandIndex) return;
+
+  const topBrand = brandInsights[0];
+  const topCategoryMix = [...brandInsights].sort((left, right) => right.categories.length - left.categories.length)[0];
+  const groupedBrands = availableBrands.reduce((groups, brand) => {
+    const letter = brand.charAt(0).toUpperCase();
+    if (!groups[letter]) {
+      groups[letter] = [];
+    }
+    groups[letter].push(brand);
+    return groups;
+  }, {});
+
+  dom.brandsOverview.innerHTML = `
+    <article class="stat-panel">
+      <span>Marcas activas</span>
+      <strong>${formatNumber(availableBrands.length)}</strong>
+      <small>Brands A-Z disponibles dentro del catalogo.</small>
+    </article>
+    <article class="stat-panel">
+      <span>Productos listados</span>
+      <strong>${formatNumber(products.length)}</strong>
+      <small>Seleccion real cargada dentro de la tienda.</small>
+    </article>
+    <article class="stat-panel">
+      <span>Marca con mas surtido</span>
+      <strong>${topBrand?.brand || "Top brand"}</strong>
+      <small>${topBrand ? `${topBrand.count} productos visibles.` : "Explora la vista de marcas."}</small>
+    </article>
+    <article class="stat-panel">
+      <span>Mayor mix de categorias</span>
+      <strong>${topCategoryMix?.brand || "Beauty mix"}</strong>
+      <small>${topCategoryMix ? topCategoryMix.categories.join(" · ") : "Makeup, skincare y mas."}</small>
+    </article>
+  `;
+
+  dom.brandShowcaseGrid.innerHTML = brandInsights.slice(0, 6).map((insight) => `
+    <article class="brand-showcase-card">
+      <p class="eyebrow">Featured brand</p>
+      <h3>${insight.brand}</h3>
+      <p>${insight.count} productos visibles con presencia en ${insight.categories.length} categorias.</p>
+      <div class="brand-showcase-card__meta">
+        <span>${insight.categories.slice(0, 3).join(" · ")}</span>
+        <span>Avg. ${formatCurrency(insight.averagePrice)}</span>
+      </div>
+      <div class="brand-preview-list">
+        ${insight.products.slice(0, 3).map((product) => `<span>${product.name}</span>`).join("")}
+      </div>
+      <div class="product-card__button-group">
+        <button class="btn btn--primary btn--small" type="button" data-open-brand="${insight.brand}">Ver marca</button>
+        <button class="btn btn--ghost btn--small" type="button" data-open-quick-view="${insight.spotlight.id}">Spotlight</button>
+      </div>
+    </article>
+  `).join("");
+
+  dom.brandIndex.innerHTML = Object.keys(groupedBrands)
+    .sort((left, right) => left.localeCompare(right))
+    .map((letter) => `
+      <section class="brand-index-group">
+        <div class="brand-index-group__head">
+          <strong>${letter}</strong>
+          <span>${groupedBrands[letter].length} marcas</span>
+        </div>
+        <div class="brand-chip-grid">
+          ${groupedBrands[letter].map((brand) => `
+            <button class="brand-chip" type="button" data-open-brand="${brand}">
+              <span>${brand}</span>
+              <small>${brandProductCounts[brand] || 0} productos</small>
+            </button>
+          `).join("")}
+        </div>
+      </section>
+    `).join("");
+}
+
+function renderOffersScreen(force = false) {
+  if (!force && state.activeScreen !== "offersScreen") return;
+  if (!dom.offerBannerGrid || !dom.offerUnder25Grid || !dom.offerReplenishGrid || !dom.offerLuxuryGrid) return;
+
+  dom.offerBannerGrid.innerHTML = offerBannerConfig.map((offer) => {
+    const promo = promoCatalog[offer.code];
+    return `
+      <article class="offer-banner offer-banner--${offer.accent}">
+        <p class="eyebrow">${offer.eyebrow}</p>
+        <h3>${offer.title}</h3>
+        <p>${offer.copy}</p>
+        <div class="offer-banner__meta">
+          <span>${offer.code}</span>
+          <span>Minimo ${formatCurrency(promo.minSubtotal)}</span>
+        </div>
+        <div class="product-card__button-group">
+          <button class="btn btn--primary btn--small" type="button" data-apply-store-promo="${offer.code}">Llevar al checkout</button>
+          <button class="btn btn--ghost btn--small" type="button" data-screen-target="catalogScreen">Seguir comprando</button>
+        </div>
+      </article>
+    `;
+  }).join("");
+
+  dom.offerUnder25Grid.innerHTML = offerCollections.under25.products.map((product) => renderProductCard(product)).join("");
+  dom.offerReplenishGrid.innerHTML = offerCollections.replenish.products.map((product) => renderProductCard(product)).join("");
+  dom.offerLuxuryGrid.innerHTML = offerCollections.luxury.products.map((product) => renderProductCard(product)).join("");
+
+  attachImageFallbacks(dom.offerUnder25Grid);
+  attachImageFallbacks(dom.offerReplenishGrid);
+  attachImageFallbacks(dom.offerLuxuryGrid);
+}
+
+function renderFinderScreen(force = false) {
+  if (!force && state.activeScreen !== "finderScreen") return;
+  if (!dom.concernGrid || !dom.routineGrid) return;
+
+  dom.concernGrid.innerHTML = concernCollections.map((concern) => {
+    const leadProducts = concern.products.slice(0, 3);
+    return `
+      <article class="concern-card">
+        <p class="eyebrow">Shop by concern</p>
+        <h3>${concern.label}</h3>
+        <p>${concern.description}</p>
+        <div class="concern-card__meta">
+          <span>${concern.count} matches</span>
+          <span>${concern.category.toUpperCase()}</span>
+        </div>
+        <div class="brand-preview-list">
+          ${concern.tags.map((tag) => `<span>${tag}</span>`).join("")}
+        </div>
+        <div class="concern-card__products">
+          ${leadProducts.map((product) => `<span>${product.brand} | ${product.name}</span>`).join("")}
+        </div>
+        <div class="product-card__button-group">
+          <button class="btn btn--primary btn--small" type="button" data-open-concern="${concern.id}">Ver seleccion</button>
+          <button class="btn btn--ghost btn--small" type="button" data-open-quick-view="${leadProducts[0]?.id || ""}">Spotlight</button>
+        </div>
+      </article>
+    `;
+  }).join("");
+
+  dom.routineGrid.innerHTML = concernCollections.slice(0, 4).map((concern) => `
+    <article class="routine-card">
+      <p class="eyebrow">Routine idea</p>
+      <h3>${concern.label}</h3>
+      <p>${concern.description}</p>
+      <ol class="routine-list">
+        ${concern.products.slice(0, 3).map((product) => `<li><strong>${product.brand}</strong><span>${product.name}</span></li>`).join("")}
+      </ol>
+      <button class="btn btn--secondary btn--small" type="button" data-open-concern="${concern.id}">Abrir ruta</button>
+    </article>
+  `).join("");
 }
 
 function renderLoves(force = false) {
@@ -2508,6 +2957,37 @@ async function handleDocumentClick(event) {
   const closeModalButton = event.target.closest("[data-close-modal]");
   if (closeModalButton) {
     closeQuickView();
+    return;
+  }
+
+  const brandButton = event.target.closest("[data-open-brand]");
+  if (brandButton) {
+    openBrandExperience(brandButton.dataset.openBrand);
+    return;
+  }
+
+  const concernButton = event.target.closest("[data-open-concern]");
+  if (concernButton) {
+    openConcernExperience(concernButton.dataset.openConcern);
+    return;
+  }
+
+  const offerButton = event.target.closest("[data-open-offer-category]");
+  if (offerButton) {
+    openOfferCollection(offerButton.dataset.openOfferCategory);
+    return;
+  }
+
+  const promoButton = event.target.closest("[data-apply-store-promo]");
+  if (promoButton) {
+    const promoCode = normalizeCode(promoButton.dataset.applyStorePromo);
+    state.checkout.promoCode = promoCode;
+    checkoutFields.promoCode.value = promoCode;
+    state.checkout.appliedPromoCode = "";
+    saveState();
+    renderStoreChrome();
+    setActiveScreen("checkoutScreen");
+    showToast(`Promo ${promoCode} preparada en checkout.`);
     return;
   }
 

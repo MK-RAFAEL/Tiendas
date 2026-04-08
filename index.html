@@ -15,7 +15,7 @@
     rel="stylesheet"
   >
   <link rel="icon" type="image/jpeg" href="./assets/images/hero-products.jpg">
-  <link rel="stylesheet" href="./styles/style.css?v=20260407-responsive-window">
+  <link rel="stylesheet" href="./styles/style.css?v=20260408-sephora-experience">
 </head>
 <body>
   <div class="site-glow site-glow--one" aria-hidden="true"></div>
@@ -54,6 +54,9 @@
     <nav class="header-nav" aria-label="Secciones principales">
       <button class="nav-pill is-active" type="button" data-screen-target="homeScreen">Inicio</button>
       <button class="nav-pill" type="button" data-screen-target="catalogScreen">Catalogo</button>
+      <button class="nav-pill" type="button" data-screen-target="brandsScreen">Marcas</button>
+      <button class="nav-pill" type="button" data-screen-target="offersScreen">Ofertas</button>
+      <button class="nav-pill" type="button" data-screen-target="finderScreen">Beauty Match</button>
       <button class="nav-pill" type="button" data-screen-target="lovesScreen">
         Loves
         <span class="nav-pill__count" id="headerLovesCount">0</span>
@@ -93,7 +96,7 @@
               <span>productos beauty</span>
             </article>
             <article class="stat-card">
-              <strong>9</strong>
+              <strong>12</strong>
               <span>vistas separadas</span>
             </article>
             <article class="stat-card">
@@ -153,6 +156,41 @@
             <p class="eyebrow">Fulfillment</p>
             <h3>Shipping, same-day y pickup</h3>
             <p>La tienda ahora comunica opciones de entrega mas actuales para que se sienta como una web de ventas online seria.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="home-section reveal">
+        <div class="section-headline">
+          <div>
+            <p class="eyebrow">Beauty discovery</p>
+            <h2>Explora por marcas, ofertas y necesidades de rutina</h2>
+          </div>
+          <p class="section-headline__text">
+            Inspirado en experiencias grandes de beauty retail: Brands A-Z, ofertas vivas y compra guiada por concern.
+          </p>
+        </div>
+
+        <div class="discovery-grid">
+          <article class="discovery-card">
+            <p class="eyebrow">Brands A-Z</p>
+            <h3>Descubre marcas destacadas y alfabeticas</h3>
+            <p>Entra a una vista dedicada para abrir Rare Beauty, Dior, Charlotte Tilbury y otras marcas reales de tu catalogo.</p>
+            <button class="btn btn--secondary" type="button" data-screen-target="brandsScreen">Abrir marcas</button>
+          </article>
+
+          <article class="discovery-card">
+            <p class="eyebrow">Beauty offers</p>
+            <h3>Promos, picks por precio y ahorro inteligente</h3>
+            <p>Reune ofertas, promos, auto-replenish y selecciones por presupuesto como en una tienda online grande.</p>
+            <button class="btn btn--secondary" type="button" data-screen-target="offersScreen">Ver ofertas</button>
+          </article>
+
+          <article class="discovery-card">
+            <p class="eyebrow">Shop by concern</p>
+            <h3>Compra por glow, hidratacion, labios, ojos y SPF</h3>
+            <p>Obtienes rutas de compra guiadas segun la necesidad principal del look o del cuidado de la piel.</p>
+            <button class="btn btn--secondary" type="button" data-screen-target="finderScreen">Probar beauty match</button>
           </article>
         </div>
       </section>
@@ -350,6 +388,128 @@
           </div>
         </div>
       </div>
+    </section>
+
+    <section class="screen" id="brandsScreen">
+      <div class="screen-header reveal">
+        <div>
+          <p class="eyebrow">Brands A-Z</p>
+          <h2>Explora marcas destacadas, orden alfabetico y entradas directas al catalogo por brand.</h2>
+        </div>
+        <div class="screen-actions">
+          <button class="btn btn--ghost" type="button" data-screen-target="catalogScreen">Ir al catalogo</button>
+          <button class="btn btn--primary" type="button" data-screen-target="offersScreen">Ver ofertas</button>
+        </div>
+      </div>
+
+      <section class="card-surface reveal">
+        <div class="brands-overview" id="brandsOverview"></div>
+      </section>
+
+      <section class="card-surface reveal reveal-delay">
+        <div class="section-inline-head">
+          <div>
+            <p class="eyebrow">Featured brands</p>
+            <h3>Marcas top dentro de la tienda</h3>
+          </div>
+          <p class="catalog-summary-note">Cada bloque lleva a su seleccion real dentro del catalogo, sin salir de la tienda.</p>
+        </div>
+        <div class="brand-showcase-grid" id="brandShowcaseGrid"></div>
+      </section>
+
+      <section class="card-surface reveal">
+        <div class="section-inline-head">
+          <div>
+            <p class="eyebrow">Indice completo</p>
+            <h3>Brands A-Z para navegar mas rapido</h3>
+          </div>
+          <p class="catalog-summary-note">Toca una marca y abrimos el catalogo ya filtrado.</p>
+        </div>
+        <div class="brand-index" id="brandIndex"></div>
+      </section>
+    </section>
+
+    <section class="screen" id="offersScreen">
+      <div class="screen-header reveal">
+        <div>
+          <p class="eyebrow">Beauty offers</p>
+          <h2>Promociones, selecciones por precio y ahorros tipo tienda online premium.</h2>
+        </div>
+        <div class="screen-actions">
+          <button class="btn btn--ghost" type="button" data-screen-target="checkoutScreen">Abrir checkout</button>
+          <button class="btn btn--primary" type="button" data-screen-target="finderScreen">Shop by concern</button>
+        </div>
+      </div>
+
+      <div class="offer-banner-grid reveal" id="offerBannerGrid"></div>
+
+      <section class="card-surface reveal reveal-delay">
+        <div class="section-inline-head">
+          <div>
+            <p class="eyebrow">Beauty deals</p>
+            <h3>Grandes picks por presupuesto</h3>
+          </div>
+          <p class="catalog-summary-note">Agrupaciones pensadas para parecer una experiencia de ofertas real, con productos del mismo catalogo.</p>
+        </div>
+        <div class="offer-shelf">
+          <div class="offer-shelf__header">
+            <div>
+              <span>Under $25</span>
+              <strong>Favoritos accesibles</strong>
+            </div>
+            <button class="btn btn--ghost btn--small" type="button" data-open-offer-category="under25">Ver mas</button>
+          </div>
+          <div class="catalog-grid offer-grid" id="offerUnder25Grid"></div>
+        </div>
+
+        <div class="offer-shelf">
+          <div class="offer-shelf__header">
+            <div>
+              <span>Auto-Replenish</span>
+              <strong>Skincare y suncare para recompra</strong>
+            </div>
+            <button class="btn btn--ghost btn--small" type="button" data-open-offer-category="replenish">Abrir categoria</button>
+          </div>
+          <div class="catalog-grid offer-grid" id="offerReplenishGrid"></div>
+        </div>
+
+        <div class="offer-shelf">
+          <div class="offer-shelf__header">
+            <div>
+              <span>Luxury picks</span>
+              <strong>Selecciones premium y splurge-worthy</strong>
+            </div>
+            <button class="btn btn--ghost btn--small" type="button" data-open-offer-category="luxury">Explorar lujo</button>
+          </div>
+          <div class="catalog-grid offer-grid" id="offerLuxuryGrid"></div>
+        </div>
+      </section>
+    </section>
+
+    <section class="screen" id="finderScreen">
+      <div class="screen-header reveal">
+        <div>
+          <p class="eyebrow">Beauty match</p>
+          <h2>Compra guiada por glow, hidratacion, acne, solar, labios y ojos.</h2>
+        </div>
+        <div class="screen-actions">
+          <button class="btn btn--ghost" type="button" data-screen-target="brandsScreen">Ver marcas</button>
+          <button class="btn btn--primary" type="button" data-screen-target="catalogScreen">Abrir catalogo</button>
+        </div>
+      </div>
+
+      <div class="concern-grid reveal" id="concernGrid"></div>
+
+      <section class="card-surface reveal reveal-delay">
+        <div class="section-inline-head">
+          <div>
+            <p class="eyebrow">Routine ideas</p>
+            <h3>Rutas de compra armadas desde tu mismo catalogo</h3>
+          </div>
+          <p class="catalog-summary-note">Cada recomendacion mezcla marcas reales disponibles en la tienda y te lleva a la seleccion filtrada.</p>
+        </div>
+        <div class="routine-grid" id="routineGrid"></div>
+      </section>
     </section>
 
     <section class="screen" id="lovesScreen">
@@ -937,6 +1097,6 @@
   <script src="./scripts/catalog-extra-data.js?v=20260407-brandfilter"></script>
   <script src="./scripts/catalog-data.js?v=20260407-brandfilter"></script>
   <script src="./scripts/db.js?v=20260407-brandfilter"></script>
-  <script src="./scripts/app.js?v=20260407-brandfilter"></script>
+  <script src="./scripts/app.js?v=20260408-sephora-experience"></script>
 </body>
 </html>
