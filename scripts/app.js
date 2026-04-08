@@ -27,13 +27,13 @@ const shippingCountries = [
     name: "Republica Dominicana",
     eta: "1 a 3 dias",
     surcharge: 0,
-    note: "Cobertura principal con mejores tiempos, same-day local y opciones de pickup boutique."
+    note: "Cobertura principal con mejores tiempos, entrega prioritaria local y opciones de retiro boutique."
   },
   {
     name: "Puerto Rico",
     eta: "2 a 4 dias",
     surcharge: 4,
-    note: "Seguimiento disponible y elegibilidad parcial para fulfillment acelerado."
+    note: "Seguimiento disponible y elegibilidad parcial para despacho acelerado."
   },
   {
     name: "Mexico",
@@ -45,13 +45,13 @@ const shippingCountries = [
     name: "Colombia",
     eta: "4 a 7 dias",
     surcharge: 7,
-    note: "Ventana equilibrada para standard shipping y premium insured."
+    note: "Ventana equilibrada para envio estandar y envio premium asegurado."
   },
   {
     name: "Chile",
     eta: "5 a 8 dias",
     surcharge: 8,
-    note: "Se recomienda premium insured para compras de ticket alto."
+    note: "Se recomienda envio premium asegurado para compras de ticket alto."
   },
   {
     name: "Peru",
@@ -69,13 +69,13 @@ const shippingCountries = [
     name: "Costa Rica",
     eta: "4 a 7 dias",
     surcharge: 6,
-    note: "Disponible en standard shipping y premium insured."
+    note: "Disponible en envio estandar y envio premium asegurado."
   },
   {
     name: "Guatemala",
     eta: "4 a 7 dias",
     surcharge: 6,
-    note: "Pedidos disponibles con preparacion beauty-safe y tracking."
+    note: "Pedidos disponibles con preparacion protegida y seguimiento digital."
   }
 ];
 
@@ -83,31 +83,31 @@ const localFulfillmentCountries = new Set(["Republica Dominicana", "Puerto Rico"
 
 const shippingMethods = {
   standard: {
-    label: "Standard shipping",
+    label: "Envio estandar",
     base: 12,
     eta: "3 a 7 dias",
     description: "Entrega regular con seguimiento digital y envio gratis en ordenes elegibles."
   },
   "same-day": {
-    label: "Same-day delivery",
+    label: "Entrega el mismo dia",
     base: 22,
     eta: "Mismo dia",
-    description: "Entrega prioritaria local inspirada en beauty on demand."
+    description: "Entrega prioritaria local para compras urgentes en zonas elegibles."
   },
   premium: {
-    label: "Premium insured",
+    label: "Envio premium asegurado",
     base: 34,
     eta: "2 a 5 dias",
     description: "Cobertura reforzada para ordenes de mayor valor."
   },
   pickup: {
-    label: "Buy online & pick up",
+    label: "Compra y retiro",
     base: 0,
     eta: "Listo el mismo dia",
-    description: "Retiro en studio sin costo."
+    description: "Retiro en estudio sin costo."
   },
   curbside: {
-    label: "Curbside pickup",
+    label: "Retiro rapido",
     base: 0,
     eta: "Listo en 2 horas",
     description: "Retiro rapido en punto acordado."
@@ -118,7 +118,24 @@ const paymentLabels = {
   card: "Tarjeta",
   transfer: "Transferencia bancaria",
   cash: "Pago contra entrega",
-  "pickup-pay": "Pago en studio"
+  "pickup-pay": "Pago en estudio"
+};
+
+const statusLabels = {
+  Draft: "Borrador",
+  Paid: "Pagada"
+};
+
+const categoryLabels = {
+  makeup: "Maquillaje",
+  lips: "Labios",
+  eyes: "Ojos",
+  skincare: "Skincare",
+  suncare: "Proteccion solar",
+  tools: "Herramientas",
+  fragrance: "Fragancias",
+  hair: "Cabello",
+  body: "Cuidado corporal"
 };
 
 const promoCatalog = {
@@ -129,14 +146,14 @@ const promoCatalog = {
     minSubtotal: 75
   },
   GLOW15: {
-    label: "15% en skincare y suncare",
+    label: "15% en skincare y proteccion solar",
     type: "percent-category",
     value: 0.15,
     minSubtotal: 60,
     categories: ["skincare", "suncare"]
   },
   FREESHIP: {
-    label: "Envio gratis en standard shipping",
+    label: "Envio gratis en envio estandar",
     type: "shipping",
     value: 1,
     minSubtotal: 70
@@ -240,29 +257,29 @@ const concernDefinitions = [
 const offerBannerConfig = [
   {
     code: "LALA10",
-    eyebrow: "Online offer",
+    eyebrow: "Oferta online",
     title: "10% en el pedido beauty",
-    copy: "Activa un descuento general en compras elegibles y llévalo directo al checkout.",
+    copy: "Activa un descuento general en compras elegibles y llevalo directo a la vista de pago.",
     accent: "soft"
   },
   {
     code: "GLOW15",
-    eyebrow: "Skin event",
-    title: "15% en skincare y suncare",
+    eyebrow: "Evento skincare",
+    title: "15% en skincare y proteccion solar",
     copy: "Ideal para rutinas de hidratacion, protectores y reposiciones tipo skincare haul.",
     accent: "bright"
   },
   {
     code: "FREESHIP",
-    eyebrow: "Shipping perk",
-    title: "Envio gratis en standard",
+    eyebrow: "Beneficio de envio",
+    title: "Envio gratis en estandar",
     copy: "Ahorro instantaneo cuando tu carrito alcanza el minimo y quieres dejarlo listo para despacho.",
     accent: "gold"
   },
   {
     code: "BUNDLE20",
-    eyebrow: "High cart reward",
-    title: "$20 off en carritos altos",
+    eyebrow: "Compra inteligente",
+    title: "$20 de ahorro en carritos altos",
     copy: "Pensado para compras grandes, reposiciones o mixes premium con varias categorias.",
     accent: "deep"
   }
@@ -577,13 +594,13 @@ const offerCollections = {
     products: getCuratedProducts((product) => product.price <= 25, 4, "makeup")
   },
   replenish: {
-    label: "Auto-Replenish",
-    description: "Skincare y suncare que encajan mejor en una rutina de recompra.",
+    label: "Reposicion automatica",
+    description: "Skincare y proteccion solar que encajan mejor en una rutina de recompra.",
     products: getCuratedProducts((product) => isAutoReplenishEligible(product), 4, "skincare")
   },
   luxury: {
-    label: "Luxury splurge",
-    description: "Selecciones premium para carritos mas altos y una experiencia mas prestige.",
+    label: "Seleccion premium",
+    description: "Selecciones premium para carritos mas altos y una experiencia mas exclusiva.",
     products: getCuratedProducts((product) => product.price >= 48, 4, "makeup")
   }
 };
@@ -613,6 +630,14 @@ function getTierMultiplier(tier) {
   return 1;
 }
 
+function getStatusLabel(status) {
+  return statusLabels[status] || status || "Pendiente";
+}
+
+function getCategoryLabel(category, fallback = "Categoria") {
+  return categoryLabels[category] || fallback;
+}
+
 function getNumericSeed(value) {
   return [...String(value || "")].reduce((sum, char) => sum + char.charCodeAt(0), 0);
 }
@@ -628,18 +653,18 @@ function getProductInsights(product) {
   const rating = (4.1 + ((seed % 9) / 10)).toFixed(1);
   const reviews = 120 + ((seed * 17) % 2800);
   const primaryBadge = product.featuredOrder <= 12
-    ? "Bestseller"
+    ? "Mas vendido"
     : product.category === "skincare"
-      ? "Skin favorite"
+      ? "Favorito skincare"
       : product.category === "lips"
-        ? "Trending lips"
+        ? "Tendencia labios"
         : product.category === "eyes"
-          ? "Top eyes"
+          ? "Top ojos"
           : product.category === "tools"
-            ? "Beauty tool"
-            : "Editor pick";
+            ? "Herramienta pro"
+            : "Seleccion editorial";
   const secondaryBadge = isAutoReplenishEligible(product)
-    ? "Auto-Replenish 5%"
+    ? "Reposicion 5%"
     : product.subcategory;
 
   return {
@@ -1179,11 +1204,11 @@ function toggleLove(productId, triggerElement) {
 
   if (state.loves.includes(productId)) {
     state.loves = state.loves.filter((id) => id !== productId);
-    showToast("Producto removido de loves.");
+    showToast("Producto removido de favoritos.");
   } else {
     state.loves = [productId, ...state.loves.filter((id) => id !== productId)];
     recordProductView(productId, false);
-    showToast("Producto guardado en loves.");
+    showToast("Producto guardado en favoritos.");
     createSparkles(triggerElement);
   }
 
@@ -1434,7 +1459,7 @@ function renderProductCard(product) {
             class="icon-button ${loved ? "is-active" : ""}"
             type="button"
             data-toggle-love="${product.id}"
-            aria-label="Guardar en loves"
+            aria-label="Guardar en favoritos"
           >
             ${loved ? "&#10084;" : "&#9825;"}
           </button>
@@ -1459,13 +1484,13 @@ function renderProductCard(product) {
         <div class="product-card__meta">
           <span>${product.subcategory}</span>
           <span>${insights.secondaryBadge}</span>
-          <span>${product.categoryLabel}</span>
+          <span>${getCategoryLabel(product.category, product.categoryLabel)}</span>
         </div>
 
         <div class="product-card__footer">
           <div>
             <strong class="product-card__price">${product.priceLabel}</strong>
-            <small>Precio base en carrito: ${formatCurrency(product.price)}</small>
+            <small>Precio base al agregar: ${formatCurrency(product.price)}</small>
           </div>
 
           <div class="product-card__button-group">
@@ -1574,31 +1599,31 @@ function renderBrandsScreen(force = false) {
     </article>
     <article class="stat-panel">
       <span>Marca con mas surtido</span>
-      <strong>${topBrand?.brand || "Top brand"}</strong>
+      <strong>${topBrand?.brand || "Marca destacada"}</strong>
       <small>${topBrand ? `${topBrand.count} productos visibles.` : "Explora la vista de marcas."}</small>
     </article>
     <article class="stat-panel">
       <span>Mayor mix de categorias</span>
-      <strong>${topCategoryMix?.brand || "Beauty mix"}</strong>
+      <strong>${topCategoryMix?.brand || "Mix destacado"}</strong>
       <small>${topCategoryMix ? topCategoryMix.categories.join(" · ") : "Makeup, skincare y mas."}</small>
     </article>
   `;
 
   dom.brandShowcaseGrid.innerHTML = brandInsights.slice(0, 6).map((insight) => `
     <article class="brand-showcase-card">
-      <p class="eyebrow">Featured brand</p>
+      <p class="eyebrow">Marca destacada</p>
       <h3>${insight.brand}</h3>
       <p>${insight.count} productos visibles con presencia en ${insight.categories.length} categorias.</p>
       <div class="brand-showcase-card__meta">
         <span>${insight.categories.slice(0, 3).join(" · ")}</span>
-        <span>Avg. ${formatCurrency(insight.averagePrice)}</span>
+        <span>Prom. ${formatCurrency(insight.averagePrice)}</span>
       </div>
       <div class="brand-preview-list">
         ${insight.products.slice(0, 3).map((product) => `<span>${product.name}</span>`).join("")}
       </div>
       <div class="product-card__button-group">
         <button class="btn btn--primary btn--small" type="button" data-open-brand="${insight.brand}">Ver marca</button>
-        <button class="btn btn--ghost btn--small" type="button" data-open-quick-view="${insight.spotlight.id}">Spotlight</button>
+        <button class="btn btn--ghost btn--small" type="button" data-open-quick-view="${insight.spotlight.id}">Destacado</button>
       </div>
     </article>
   `).join("");
@@ -1639,7 +1664,7 @@ function renderOffersScreen(force = false) {
           <span>Minimo ${formatCurrency(promo.minSubtotal)}</span>
         </div>
         <div class="product-card__button-group">
-          <button class="btn btn--primary btn--small" type="button" data-apply-store-promo="${offer.code}">Llevar al checkout</button>
+          <button class="btn btn--primary btn--small" type="button" data-apply-store-promo="${offer.code}">Llevar al pago</button>
           <button class="btn btn--ghost btn--small" type="button" data-screen-target="catalogScreen">Seguir comprando</button>
         </div>
       </article>
@@ -1667,8 +1692,8 @@ function renderFinderScreen(force = false) {
         <h3>${concern.label}</h3>
         <p>${concern.description}</p>
         <div class="concern-card__meta">
-          <span>${concern.count} matches</span>
-          <span>${concern.category.toUpperCase()}</span>
+          <span>${concern.count} coincidencias</span>
+          <span>${getCategoryLabel(concern.category, concern.category).toUpperCase()}</span>
         </div>
         <div class="brand-preview-list">
           ${concern.tags.map((tag) => `<span>${tag}</span>`).join("")}
@@ -1678,7 +1703,7 @@ function renderFinderScreen(force = false) {
         </div>
         <div class="product-card__button-group">
           <button class="btn btn--primary btn--small" type="button" data-open-concern="${concern.id}">Ver seleccion</button>
-          <button class="btn btn--ghost btn--small" type="button" data-open-quick-view="${leadProducts[0]?.id || ""}">Spotlight</button>
+          <button class="btn btn--ghost btn--small" type="button" data-open-quick-view="${leadProducts[0]?.id || ""}">Destacado</button>
         </div>
       </article>
     `;
@@ -1713,7 +1738,7 @@ function renderLoves(force = false) {
       <div class="empty-card empty-card--tall">
         <p class="eyebrow">Sin favoritos</p>
         <h3>Todavia no has guardado productos.</h3>
-        <p>Explora el catalogo y usa el corazon para armar tu propia lista de loves.</p>
+        <p>Explora el catalogo y usa el corazon para armar tu propia lista de favoritos.</p>
         <button class="btn btn--primary" type="button" data-screen-target="catalogScreen">Ir al catalogo</button>
       </div>
     `;
@@ -1753,7 +1778,7 @@ function renderLoyaltyPanels() {
   dom.lovesCount.textContent = String(state.loves.length);
   dom.recentlyViewedCount.textContent = String(state.recentlyViewed.length);
   dom.lovesTierBadge.textContent = state.loyalty.tier;
-  dom.loyaltyTierLabel.textContent = `${state.loyalty.tier} member`;
+  dom.loyaltyTierLabel.textContent = `Nivel ${state.loyalty.tier}`;
   dom.loyaltyPointsLabel.textContent = `${formatNumber(state.loyalty.points)} puntos disponibles en la cuenta.`;
   dom.loyaltyRewardLabel.textContent = `Beauty Cash disponible: ${formatCurrency(rewardValue)}`;
   checkoutFields.applyBeautyCash.checked = Boolean(state.checkout.applyBeautyCash);
@@ -1892,9 +1917,9 @@ function renderCart(force = false) {
           ${isAutoReplenishEligible(item) ? `
             <label class="toggle-row toggle-row--inline">
               <input type="checkbox" data-auto-replenish="${item.id}" ${item.autoReplenish ? "checked" : ""}>
-              <span>Auto-Replenish 5% de ahorro</span>
+              <span>Reposicion automatica con 5% de ahorro</span>
             </label>
-          ` : `<p class="cart-item__perk">Auto-Replenish no disponible para esta categoria.</p>`}
+          ` : `<p class="cart-item__perk">La reposicion automatica no esta disponible para esta categoria.</p>`}
         </div>
 
         <div class="cart-item__controls">
@@ -1972,7 +1997,7 @@ function renderCheckoutSummary(force = false) {
   if (!items.length) {
     dom.checkoutSummary.innerHTML = `
       <p class="eyebrow">Resumen</p>
-      <h3>Checkout vacio</h3>
+      <h3>Pago vacio</h3>
       <p>No hay productos en el carrito todavia. Agrega productos desde el catalogo para completar esta seccion.</p>
       <button class="btn btn--primary" type="button" data-screen-target="catalogScreen">Agregar productos</button>
     `;
@@ -1986,7 +2011,7 @@ function renderCheckoutSummary(force = false) {
 
   dom.checkoutSummary.innerHTML = `
     <p class="eyebrow">Resumen de compra</p>
-    <h3>Checkout overview</h3>
+    <h3>Resumen del pago</h3>
 
     <div class="summary-list">
       ${previewItems.map((item) => `
@@ -2052,7 +2077,7 @@ function renderShippingCountries() {
       <h3>${country.eta}</h3>
       <div class="country-card__meta">
         <span>Recargo: ${country.surcharge ? formatCurrency(country.surcharge) : "Base local"}</span>
-        <span>${localFulfillmentCountries.has(country.name) ? "Same-day disponible" : "Standard y premium"}</span>
+        <span>${localFulfillmentCountries.has(country.name) ? "Entrega prioritaria disponible" : "Estandar y premium"}</span>
       </div>
       <p>${country.note}</p>
     </article>
@@ -2209,11 +2234,11 @@ function renderInvoice(force = false) {
   dom.invoicePreviewShippingCost.textContent = formatCurrency(invoice.shipping);
   dom.invoicePreviewTotal.textContent = formatCurrency(invoice.total);
 
-  dom.invoiceStatusBadge.textContent = invoice.status;
+  dom.invoiceStatusBadge.textContent = getStatusLabel(invoice.status);
   dom.invoiceStatusBadge.dataset.status = normalizeText(invoice.status).replace(/\s+/g, "-");
-  dom.invoiceStatusText.textContent = `Estado: ${invoice.status}`;
+  dom.invoiceStatusText.textContent = `Estado: ${getStatusLabel(invoice.status)}`;
   dom.invoiceItemCount.textContent = String(invoice.itemCount);
-  dom.invoicePaidDate.textContent = invoice.paidAt ? `Pagado: ${formatDateTime(invoice.paidAt)}` : "Pagado: Pendiente";
+  dom.invoicePaidDate.textContent = invoice.paidAt ? `Pagada: ${formatDateTime(invoice.paidAt)}` : "Pagada: Pendiente";
   dom.invoiceEarnedPoints.textContent = `Puntos: ${formatNumber(invoice.pointsEarned)}`;
   dom.invoiceTierStatus.textContent = `Nivel: ${invoice.loyaltyTier}`;
 
@@ -2224,7 +2249,7 @@ function renderInvoice(force = false) {
       <div class="invoice-table__row">
         <div class="invoice-row__product">
           <strong>${item.name}</strong>
-          <small>${item.brand}${item.autoReplenish ? " | Auto-Replenish" : ""}</small>
+          <small>${item.brand}${item.autoReplenish ? " | Reposicion automatica" : ""}</small>
         </div>
         <span class="invoice-cell" data-label="Precio">${formatCurrency(item.price)}</span>
         <span class="invoice-cell" data-label="Cantidad">${item.qty}</span>
@@ -2272,7 +2297,7 @@ function renderHistory(force = false) {
           <h3>${order.customerName || "Cliente sin nombre"}</h3>
         </div>
         <span class="history-card__status history-card__status--${normalizeText(order.status).replace(/\s+/g, "-")}">
-          ${order.status}
+          ${getStatusLabel(order.status)}
         </span>
       </div>
 
@@ -2331,7 +2356,7 @@ function renderQuickView() {
   dom.quickViewDescription.textContent = product.description;
   dom.quickViewPrice.textContent = product.priceLabel;
   dom.quickViewRating.textContent = `${insights.rating} ★ | ${formatNumber(insights.reviews)} resenas`;
-  dom.quickViewCategory.textContent = product.categoryLabel;
+  dom.quickViewCategory.textContent = getCategoryLabel(product.category, product.categoryLabel);
   dom.quickViewBadge.textContent = insights.primaryBadge;
   dom.quickViewSource.href = product.sourceUrl;
   dom.quickViewImage.src = product.image;
@@ -2339,7 +2364,7 @@ function renderQuickView() {
   dom.quickViewImage.dataset.fallback = product.fallbackImage;
   dom.quickViewAutoReplenish.checked = Boolean(cartItem?.autoReplenish);
   dom.quickViewAutoReplenish.disabled = !isAutoReplenishEligible(product);
-  dom.quickViewLoveButton.textContent = loved ? "Quitar de loves" : "Guardar en loves";
+  dom.quickViewLoveButton.textContent = loved ? "Quitar de favoritos" : "Guardar en favoritos";
   dom.quickViewLoveButton.dataset.productId = product.id;
   dom.quickViewAddButton.dataset.productId = product.id;
 
@@ -2769,12 +2794,12 @@ function createPdfBlob(invoice) {
   addBorderRect(margin, 32, 58, 58, stripeColor, 1.2);
   addText("ML", margin + 15, 69, 26, accentDark, "F2");
   addText("MAKEUP BY LALA", margin + 76, 62, 11, white, "F2");
-  addText("Beauty boutique invoice", margin + 76, 82, 10, stripeColor);
+  addText("Factura comercial de belleza", margin + 76, 82, 10, stripeColor);
 
   addRightText("FACTURA", contentRight, 58, 28, white, "F2");
   addRightText(`Factura: ${invoice.invoiceNumber || "MBL-0000"}`, contentRight, 86, 10.5, white, "F2");
   addRightText(`Fecha: ${issuedLabel}`, contentRight, 102, 9.6, stripeColor, "F2");
-  addRightText(`Estado: ${invoice.status}`, contentRight, 117, 9.6, stripeColor, "F2");
+  addRightText(`Estado: ${getStatusLabel(invoice.status)}`, contentRight, 117, 9.6, stripeColor, "F2");
 
   addText("INFORMACION DEL CLIENTE", margin + 8, 176, 13, textColor, "F2");
   addText("NOMBRE:", margin + 8, 204, 10, accentDark, "F2");
@@ -2811,7 +2836,7 @@ function createPdfBlob(invoice) {
   } else {
     visibleItems.forEach((item, index) => {
       const productLines = wrapText(item.name, 34).slice(0, 2);
-      const detailLine = wrapText(`${item.brand}${item.autoReplenish ? " | Auto-Replenish" : ""}`, 44)[0];
+      const detailLine = wrapText(`${item.brand}${item.autoReplenish ? " | Reposicion automatica" : ""}`, 44)[0];
       const rowHeight = 34 + ((productLines.length - 1) * 10);
       const contentTop = currentTop + 16;
       const valueTop = currentTop + Math.max(21, (rowHeight / 2) + 4);
@@ -2844,7 +2869,7 @@ function createPdfBlob(invoice) {
   const totalsX = pageWidth - margin - 174;
   const totalsRight = pageWidth - margin;
   const summaryRows = [
-    ["Sub-total", formatCurrency(invoice.subtotal)],
+    ["Subtotal", formatCurrency(invoice.subtotal)],
     ["Descuento", formatCurrency(roundCurrency(invoice.itemSavings + invoice.rewardSavings))],
     ["Envio", formatCurrency(invoice.shipping)]
   ];
@@ -2877,7 +2902,7 @@ function createPdfBlob(invoice) {
 
   addText("INFORMACION DE PAGO", footerCol2X + 8, footerTop, 12, textColor, "F2");
   addText("Estado de factura", footerCol2X + 8, footerTop + 26, 9, mutedColor);
-  addText(invoice.status, footerCol2X + 8, footerTop + 40, 10, textColor, "F2");
+  addText(getStatusLabel(invoice.status), footerCol2X + 8, footerTop + 40, 10, textColor, "F2");
   addText("Metodo de pago", footerCol2X + 8, footerTop + 56, 9, mutedColor);
   addText(paymentMethodLabel, footerCol2X + 8, footerTop + 70, 10, textColor, "F2");
   addText(`Pagado: ${paidLabel}`, footerCol2X + 8, footerTop + 86, 9.4, mutedColor);
@@ -2885,7 +2910,7 @@ function createPdfBlob(invoice) {
   addText("FIRMA", footerCol3X + 8, footerTop, 12, textColor, "F2");
   addLine(footerCol3X + 8, footerTop + 56, footerCol3X + footerColWidth - 12, footerTop + 56, accent, 1.2);
   addText("Makeup by Lala", footerCol3X + 8, footerTop + 76, 13.5, accentDark, "F2");
-  addText("Beauty boutique studio", footerCol3X + 8, footerTop + 92, 9.5, mutedColor);
+  addText("Estudio boutique de belleza", footerCol3X + 8, footerTop + 92, 9.5, mutedColor);
 
   addPolygon([
     [0, 774],
@@ -2987,7 +3012,7 @@ async function handleDocumentClick(event) {
     saveState();
     renderStoreChrome();
     setActiveScreen("checkoutScreen");
-    showToast(`Promo ${promoCode} preparada en checkout.`);
+    showToast(`Promo ${promoCode} preparada en pago.`);
     return;
   }
 
@@ -3105,7 +3130,7 @@ function bindEvents() {
 
   dom.goToCheckout.addEventListener("click", () => {
     if (!state.cart.length) {
-      showToast("Agrega productos antes de pasar al checkout.");
+      showToast("Agrega productos antes de pasar a pago.");
       setActiveScreen("catalogScreen");
       return;
     }

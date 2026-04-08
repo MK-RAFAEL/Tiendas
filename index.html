@@ -3,11 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Makeup by Lala | Beauty Store</title>
+  <title>Makeup by Lala | Tienda Online de Belleza</title>
   <meta
     name="description"
-    content="Tienda online de belleza con catalogo amplio, carrito, loyalty, muestras, checkout, soporte y factura PDF profesional para Makeup by Lala."
+    content="Boutique digital de belleza con catalogo amplio, carrito, recompensas, pagos, soporte y factura PDF profesional para Makeup by Lala."
   >
+  <meta name="theme-color" content="#c97b92">
+  <meta property="og:title" content="Makeup by Lala | Tienda Online de Belleza">
+  <meta property="og:description" content="Catalogo de belleza, carrito, pago, historial y factura PDF profesional en una experiencia ecommerce elegante.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="./assets/images/hero-products.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -15,18 +20,19 @@
     rel="stylesheet"
   >
   <link rel="icon" type="image/jpeg" href="./assets/images/hero-products.jpg">
-  <link rel="stylesheet" href="./styles/style.css?v=20260408-sephora-experience">
+  <link rel="stylesheet" href="./styles/style.css?v=20260408-professional-polish">
 </head>
 <body>
+  <a class="skip-link" href="#mainContent">Saltar al contenido principal</a>
   <div class="site-glow site-glow--one" aria-hidden="true"></div>
   <div class="site-glow site-glow--two" aria-hidden="true"></div>
 
   <div class="promo-strip">
     <div class="promo-strip__track">
-      <span>Beauty Insider inspired rewards</span>
-      <span>Loves y favoritos persistentes</span>
-      <span>Same-day delivery local</span>
-      <span>Buy online &amp; pick up</span>
+      <span>Programa de recompensas y puntos</span>
+      <span>Favoritos y vistos recientes persistentes</span>
+      <span>Entrega local prioritaria</span>
+      <span>Compra online y retiro coordinado</span>
       <span>2 muestras gratis por compra</span>
       <span>Factura PDF profesional</span>
     </div>
@@ -45,9 +51,9 @@
       </div>
 
       <div>
-        <p class="eyebrow">Luxury beauty ecommerce</p>
+        <p class="eyebrow">Boutique digital de belleza</p>
         <h1>Makeup by Lala</h1>
-        <p class="brand__signature">Beauty store online con catalogo amplio, checkout premium y experiencia de compra tipo boutique.</p>
+        <p class="brand__signature">Tienda online con catalogo amplio, pagos organizados y una experiencia de compra elegante, estable y profesional.</p>
       </div>
     </div>
 
@@ -58,14 +64,14 @@
       <button class="nav-pill" type="button" data-screen-target="offersScreen">Ofertas</button>
       <button class="nav-pill" type="button" data-screen-target="finderScreen">Beauty Match</button>
       <button class="nav-pill" type="button" data-screen-target="lovesScreen">
-        Loves
+        Favoritos
         <span class="nav-pill__count" id="headerLovesCount">0</span>
       </button>
       <button class="nav-pill" type="button" data-screen-target="cartScreen">
         Carrito
         <span class="nav-pill__count" id="headerCartCount">0</span>
       </button>
-      <button class="nav-pill" type="button" data-screen-target="checkoutScreen">Checkout</button>
+      <button class="nav-pill" type="button" data-screen-target="checkoutScreen">Pago</button>
       <button class="nav-pill" type="button" data-screen-target="invoiceScreen">Factura</button>
       <button class="nav-pill" type="button" data-screen-target="historyScreen">Historial</button>
       <button class="nav-pill" type="button" data-screen-target="shippingScreen">Envios</button>
@@ -73,35 +79,35 @@
     </nav>
   </header>
 
-  <main class="page-shell">
+  <main class="page-shell" id="mainContent">
     <section class="screen is-active" id="homeScreen">
       <div class="hero-panel reveal">
         <div class="hero-copy">
-          <p class="eyebrow">Storefront premium</p>
-          <h2>Una tienda online de belleza con funciones reales de ecommerce: busca, guarda, compra y factura con acabado profesional.</h2>
+          <p class="eyebrow">Experiencia ecommerce premium</p>
+          <h2>Una tienda online de belleza con funciones reales de ecommerce: descubre, filtra, compra y factura con presentacion profesional.</h2>
           <p class="hero-copy__text">
-            La experiencia ahora esta separada por vistas como en una tienda moderna: catalogo, loves,
-            carrito, checkout, factura, envios, historial y soporte. Se incluyen promos, puntos,
+            La experiencia esta organizada por vistas separadas, como en una tienda moderna: catalogo, favoritos,
+            carrito, pago, factura, envios, historial y soporte. Incluye promociones, recompensas,
             muestras gratis y vista rapida de producto.
           </p>
 
           <div class="hero-actions">
             <button class="btn btn--primary" type="button" data-screen-target="catalogScreen">Explorar catalogo</button>
-            <button class="btn btn--ghost" type="button" data-screen-target="lovesScreen">Abrir loves</button>
+            <button class="btn btn--ghost" type="button" data-screen-target="lovesScreen">Abrir favoritos</button>
           </div>
 
           <div class="hero-stats">
             <article class="stat-card">
               <strong id="heroProductCount">80+</strong>
-              <span>productos beauty</span>
+              <span>productos disponibles</span>
             </article>
             <article class="stat-card">
               <strong>12</strong>
               <span>vistas separadas</span>
             </article>
             <article class="stat-card">
-              <strong>Rewards</strong>
-              <span>promos y puntos</span>
+              <strong>Beneficios</strong>
+              <span>promos y recompensas</span>
             </article>
           </div>
         </div>
@@ -125,37 +131,37 @@
       <section class="home-section reveal reveal-delay">
         <div class="section-headline">
           <div>
-            <p class="eyebrow">Store experience</p>
-            <h2>Funciones inspiradas en tiendas como Sephora</h2>
+            <p class="eyebrow">Experiencia de tienda</p>
+            <h2>Funciones inspiradas en grandes tiendas de belleza</h2>
           </div>
           <p class="section-headline__text">
-            Se mezclan venta, descubrimiento y recompensas para que la pagina se sienta mas corporativa, util y aspiracional.
+            Se combinan venta, descubrimiento y recompensas para que la pagina se sienta mas corporativa, clara y aspiracional.
           </p>
         </div>
 
         <div class="store-grid store-grid--wide">
           <article class="feature-card">
-            <p class="eyebrow">My loves</p>
+            <p class="eyebrow">Favoritos</p>
             <h3>Guarda favoritos y vuelve a verlos despues</h3>
             <p>Los productos marcados como favoritos quedan guardados y puedes moverlos al carrito cuando quieras.</p>
           </article>
 
           <article class="feature-card">
-            <p class="eyebrow">Beauty rewards</p>
-            <h3>Puntos, Beauty Cash y promos</h3>
-            <p>El checkout ya maneja codigos promocionales, beneficios estilo loyalty y descuentos visibles dentro de la factura.</p>
+            <p class="eyebrow">Recompensas</p>
+            <h3>Puntos, Beauty Cash y promociones</h3>
+            <p>La vista de pago ya maneja codigos promocionales, beneficios de fidelidad y descuentos visibles dentro de la factura.</p>
           </article>
 
           <article class="feature-card">
             <p class="eyebrow">Vista rapida</p>
-            <h3>Quick view sin salir del catalogo</h3>
+            <h3>Consulta detalles sin salir del catalogo</h3>
             <p>Consulta detalles, fuente Sephora, precio y agrega al carrito desde una ventana rapida con imagen grande.</p>
           </article>
 
           <article class="feature-card">
-            <p class="eyebrow">Fulfillment</p>
-            <h3>Shipping, same-day y pickup</h3>
-            <p>La tienda ahora comunica opciones de entrega mas actuales para que se sienta como una web de ventas online seria.</p>
+            <p class="eyebrow">Logistica</p>
+            <h3>Envios, entregas prioritarias y retiro</h3>
+            <p>La tienda comunica opciones de entrega actuales para que se sienta como una web de ventas online seria y bien estructurada.</p>
           </article>
         </div>
       </section>
@@ -163,11 +169,11 @@
       <section class="home-section reveal">
         <div class="section-headline">
           <div>
-            <p class="eyebrow">Beauty discovery</p>
+            <p class="eyebrow">Descubrimiento</p>
             <h2>Explora por marcas, ofertas y necesidades de rutina</h2>
           </div>
           <p class="section-headline__text">
-            Inspirado en experiencias grandes de beauty retail: Brands A-Z, ofertas vivas y compra guiada por concern.
+            Inspirado en experiencias amplias de beauty retail: Brands A-Z, ofertas activas y compra guiada por necesidad.
           </p>
         </div>
 
@@ -180,14 +186,14 @@
           </article>
 
           <article class="discovery-card">
-            <p class="eyebrow">Beauty offers</p>
+            <p class="eyebrow">Ofertas activas</p>
             <h3>Promos, picks por precio y ahorro inteligente</h3>
             <p>Reune ofertas, promos, auto-replenish y selecciones por presupuesto como en una tienda online grande.</p>
             <button class="btn btn--secondary" type="button" data-screen-target="offersScreen">Ver ofertas</button>
           </article>
 
           <article class="discovery-card">
-            <p class="eyebrow">Shop by concern</p>
+            <p class="eyebrow">Compra guiada</p>
             <h3>Compra por glow, hidratacion, labios, ojos y SPF</h3>
             <p>Obtienes rutas de compra guiadas segun la necesidad principal del look o del cuidado de la piel.</p>
             <button class="btn btn--secondary" type="button" data-screen-target="finderScreen">Probar beauty match</button>
@@ -212,10 +218,10 @@
               <img src="./assets/images/showcase-artist.jpg" alt="Coleccion makeup">
             </div>
             <div class="collection-card__body">
-              <p class="collection-card__eyebrow">Face edit</p>
+              <p class="collection-card__eyebrow">Edicion facial</p>
               <h3>Makeup de complexion</h3>
               <p>Bases, primers, correctores, bronzers, blushes y glow con estilo editorial.</p>
-              <button class="btn btn--secondary" type="button" data-open-category="makeup">Abrir makeup</button>
+              <button class="btn btn--secondary" type="button" data-open-category="makeup">Abrir maquillaje</button>
             </div>
           </article>
 
@@ -227,7 +233,7 @@
               <p class="collection-card__eyebrow">Lip lounge</p>
               <h3>Lips y gloss favorites</h3>
               <p>Balms, liners, oils, masks y formulas hidratantes con acabado premium.</p>
-              <button class="btn btn--secondary" type="button" data-open-category="lips">Abrir lips</button>
+              <button class="btn btn--secondary" type="button" data-open-category="lips">Abrir labios</button>
             </div>
           </article>
 
@@ -236,10 +242,10 @@
               <img src="./assets/images/eyes-editorial.jpg" alt="Coleccion eyes">
             </div>
             <div class="collection-card__body">
-              <p class="collection-card__eyebrow">Eye room</p>
+              <p class="collection-card__eyebrow">Studio de ojos</p>
               <h3>Ojos, brows y mascara</h3>
               <p>Productos para looks intensos o naturales con enfoque en rendimiento y venta online.</p>
-              <button class="btn btn--secondary" type="button" data-open-category="eyes">Abrir eyes</button>
+              <button class="btn btn--secondary" type="button" data-open-category="eyes">Abrir ojos</button>
             </div>
           </article>
 
@@ -248,7 +254,7 @@
               <img src="./assets/images/skincare-flatlay.jpg" alt="Coleccion skincare">
             </div>
             <div class="collection-card__body">
-              <p class="collection-card__eyebrow">Skin ritual</p>
+              <p class="collection-card__eyebrow">Ritual facial</p>
               <h3>Skincare, creams y SPF</h3>
               <p>Serums, moisturizers, cleansers, masks y protector solar dentro de una seleccion mas completa.</p>
               <button class="btn btn--secondary" type="button" data-open-category="skincare">Abrir skincare</button>
@@ -274,11 +280,11 @@
       <div class="screen-header reveal">
         <div>
           <p class="eyebrow">Catalogo online</p>
-          <h2>Beauty store con productos reales, buscador, filtros, loves y vista rapida.</h2>
+          <h2>Tienda online con productos reales, buscador, filtros, favoritos y vista rapida.</h2>
         </div>
         <div class="screen-actions">
           <button class="btn btn--ghost" type="button" data-screen-target="lovesScreen">
-            Ver loves
+            Ver favoritos
             <span class="btn__count" id="catalogLovesCount">0</span>
           </button>
           <button class="btn btn--primary" type="button" data-screen-target="cartScreen">
@@ -291,7 +297,7 @@
       <div class="catalog-layout">
         <aside class="catalog-sidebar reveal reveal-delay">
           <div class="sidebar-card sidebar-card--highlight">
-            <p class="eyebrow">Beauty insider inspired</p>
+            <p class="eyebrow">Programa de fidelidad</p>
             <h3 id="catalogTierBadge">Insider</h3>
             <div class="sidebar-stat-list">
               <div>
@@ -313,23 +319,23 @@
             <p class="eyebrow">Descubre</p>
             <h3>Accesos por categoria</h3>
             <div class="sidebar-actions">
-              <button class="filter-chip" type="button" data-open-category="makeup">Makeup</button>
-              <button class="filter-chip" type="button" data-open-category="lips">Lips</button>
-              <button class="filter-chip" type="button" data-open-category="eyes">Eyes</button>
+              <button class="filter-chip" type="button" data-open-category="makeup">Maquillaje</button>
+              <button class="filter-chip" type="button" data-open-category="lips">Labios</button>
+              <button class="filter-chip" type="button" data-open-category="eyes">Ojos</button>
               <button class="filter-chip" type="button" data-open-category="skincare">Skincare</button>
-              <button class="filter-chip" type="button" data-open-category="suncare">Suncare</button>
-              <button class="filter-chip" type="button" data-open-category="tools">Tools</button>
+              <button class="filter-chip" type="button" data-open-category="suncare">Proteccion solar</button>
+              <button class="filter-chip" type="button" data-open-category="tools">Herramientas</button>
             </div>
           </div>
 
           <div class="sidebar-card">
-            <p class="eyebrow">Perks</p>
+            <p class="eyebrow">Ventajas</p>
             <h3>Tu tienda ahora incluye</h3>
             <ul class="sidebar-list">
               <li>Busqueda instantanea y filtros vivos.</li>
               <li>Vista rapida con foto grande y fuente.</li>
               <li>Favoritos persistentes y vistos recientes.</li>
-              <li>Promos, muestras y auto-replenish.</li>
+              <li>Promos, muestras y reposicion automatica.</li>
             </ul>
           </div>
 
@@ -366,12 +372,12 @@
 
           <div class="catalog-filter-bar" aria-label="Filtros principales">
             <button class="filter-chip is-active" type="button" data-category-filter="all">Todo</button>
-            <button class="filter-chip" type="button" data-category-filter="makeup">Makeup</button>
-            <button class="filter-chip" type="button" data-category-filter="lips">Lips</button>
-            <button class="filter-chip" type="button" data-category-filter="eyes">Eyes</button>
+            <button class="filter-chip" type="button" data-category-filter="makeup">Maquillaje</button>
+            <button class="filter-chip" type="button" data-category-filter="lips">Labios</button>
+            <button class="filter-chip" type="button" data-category-filter="eyes">Ojos</button>
             <button class="filter-chip" type="button" data-category-filter="skincare">Skincare</button>
-            <button class="filter-chip" type="button" data-category-filter="suncare">Suncare</button>
-            <button class="filter-chip" type="button" data-category-filter="tools">Tools</button>
+            <button class="filter-chip" type="button" data-category-filter="suncare">Solar</button>
+            <button class="filter-chip" type="button" data-category-filter="tools">Herramientas</button>
             <button class="btn btn--ghost btn--small" type="button" id="clearCatalogFilters">Limpiar</button>
           </div>
 
@@ -394,7 +400,7 @@
       <div class="screen-header reveal">
         <div>
           <p class="eyebrow">Brands A-Z</p>
-          <h2>Explora marcas destacadas, orden alfabetico y entradas directas al catalogo por brand.</h2>
+          <h2>Explora marcas destacadas, orden alfabetico y accesos directos al catalogo por marca.</h2>
         </div>
         <div class="screen-actions">
           <button class="btn btn--ghost" type="button" data-screen-target="catalogScreen">Ir al catalogo</button>
@@ -409,7 +415,7 @@
       <section class="card-surface reveal reveal-delay">
         <div class="section-inline-head">
           <div>
-            <p class="eyebrow">Featured brands</p>
+            <p class="eyebrow">Marcas destacadas</p>
             <h3>Marcas top dentro de la tienda</h3>
           </div>
           <p class="catalog-summary-note">Cada bloque lleva a su seleccion real dentro del catalogo, sin salir de la tienda.</p>
@@ -432,12 +438,12 @@
     <section class="screen" id="offersScreen">
       <div class="screen-header reveal">
         <div>
-          <p class="eyebrow">Beauty offers</p>
+          <p class="eyebrow">Ofertas activas</p>
           <h2>Promociones, selecciones por precio y ahorros tipo tienda online premium.</h2>
         </div>
         <div class="screen-actions">
-          <button class="btn btn--ghost" type="button" data-screen-target="checkoutScreen">Abrir checkout</button>
-          <button class="btn btn--primary" type="button" data-screen-target="finderScreen">Shop by concern</button>
+          <button class="btn btn--ghost" type="button" data-screen-target="checkoutScreen">Abrir pago</button>
+          <button class="btn btn--primary" type="button" data-screen-target="finderScreen">Compra guiada</button>
         </div>
       </div>
 
@@ -446,7 +452,7 @@
       <section class="card-surface reveal reveal-delay">
         <div class="section-inline-head">
           <div>
-            <p class="eyebrow">Beauty deals</p>
+            <p class="eyebrow">Selecciones destacadas</p>
             <h3>Grandes picks por presupuesto</h3>
           </div>
           <p class="catalog-summary-note">Agrupaciones pensadas para parecer una experiencia de ofertas real, con productos del mismo catalogo.</p>
@@ -466,7 +472,7 @@
           <div class="offer-shelf__header">
             <div>
               <span>Auto-Replenish</span>
-              <strong>Skincare y suncare para recompra</strong>
+              <strong>Skincare y solar para recompra</strong>
             </div>
             <button class="btn btn--ghost btn--small" type="button" data-open-offer-category="replenish">Abrir categoria</button>
           </div>
@@ -477,7 +483,7 @@
           <div class="offer-shelf__header">
             <div>
               <span>Luxury picks</span>
-              <strong>Selecciones premium y splurge-worthy</strong>
+              <strong>Selecciones premium y compra aspiracional</strong>
             </div>
             <button class="btn btn--ghost btn--small" type="button" data-open-offer-category="luxury">Explorar lujo</button>
           </div>
@@ -490,7 +496,7 @@
       <div class="screen-header reveal">
         <div>
           <p class="eyebrow">Beauty match</p>
-          <h2>Compra guiada por glow, hidratacion, acne, solar, labios y ojos.</h2>
+          <h2>Compra guiada por luminosidad, hidratacion, acne, proteccion solar, labios y ojos.</h2>
         </div>
         <div class="screen-actions">
           <button class="btn btn--ghost" type="button" data-screen-target="brandsScreen">Ver marcas</button>
@@ -503,8 +509,8 @@
       <section class="card-surface reveal reveal-delay">
         <div class="section-inline-head">
           <div>
-            <p class="eyebrow">Routine ideas</p>
-            <h3>Rutas de compra armadas desde tu mismo catalogo</h3>
+            <p class="eyebrow">Rutinas sugeridas</p>
+            <h3>Rutas de compra construidas desde tu propio catalogo</h3>
           </div>
           <p class="catalog-summary-note">Cada recomendacion mezcla marcas reales disponibles en la tienda y te lleva a la seleccion filtrada.</p>
         </div>
@@ -515,7 +521,7 @@
     <section class="screen" id="lovesScreen">
       <div class="screen-header reveal">
         <div>
-          <p class="eyebrow">My loves</p>
+          <p class="eyebrow">Favoritos</p>
           <h2>Favoritos guardados y productos vistos recientemente.</h2>
         </div>
         <button class="btn btn--ghost" type="button" data-screen-target="catalogScreen">Seguir comprando</button>
@@ -524,7 +530,7 @@
       <div class="loves-layout">
         <aside class="summary-card reveal reveal-delay">
           <p class="eyebrow">Resumen</p>
-          <h3>Beauty lists</h3>
+          <h3>Listas guardadas</h3>
           <div class="summary-row">
             <span>Favoritos guardados</span>
             <strong id="lovesCount">0</strong>
@@ -606,7 +612,7 @@
           </div>
 
           <div class="summary-actions">
-            <button class="btn btn--primary" type="button" id="goToCheckout">Ir a checkout</button>
+            <button class="btn btn--primary" type="button" id="goToCheckout">Ir a pago</button>
             <button class="btn btn--secondary" type="button" id="createInvoiceFromCart">Crear factura</button>
             <button class="btn btn--ghost btn--small" type="button" id="clearCart">Vaciar carrito</button>
           </div>
@@ -616,8 +622,8 @@
     <section class="screen" id="checkoutScreen">
       <div class="screen-header reveal">
         <div>
-          <p class="eyebrow">Checkout</p>
-          <h2>Completa cliente, fulfillment, promociones, rewards y muestras antes de generar la venta.</h2>
+          <p class="eyebrow">Pago</p>
+          <h2>Completa cliente, envio, promociones, recompensas y muestras antes de generar la venta.</h2>
         </div>
         <button class="btn btn--ghost" type="button" data-screen-target="invoiceScreen">Ver factura</button>
       </div>
@@ -670,7 +676,7 @@
 
           <div class="form-section">
             <div class="section-heading">
-              <p class="eyebrow">Fulfillment</p>
+              <p class="eyebrow">Despacho</p>
               <h3>Envio y pago</h3>
             </div>
 
@@ -678,11 +684,11 @@
               <label class="field">
                 <span>Metodo de envio</span>
                 <select id="shippingMethod" required>
-                  <option value="standard">Standard shipping</option>
-                  <option value="same-day">Same-day delivery</option>
-                  <option value="premium">Premium insured</option>
-                  <option value="pickup">Buy online &amp; pick up</option>
-                  <option value="curbside">Curbside pickup</option>
+                  <option value="standard">Envio estandar</option>
+                  <option value="same-day">Entrega el mismo dia</option>
+                  <option value="premium">Envio premium asegurado</option>
+                  <option value="pickup">Compra y retiro</option>
+                  <option value="curbside">Retiro rapido</option>
                 </select>
               </label>
 
@@ -692,7 +698,7 @@
                   <option value="card">Tarjeta</option>
                   <option value="transfer">Transferencia bancaria</option>
                   <option value="cash">Pago contra entrega</option>
-                  <option value="pickup-pay">Pago en studio</option>
+                  <option value="pickup-pay">Pago en estudio</option>
                 </select>
               </label>
 
@@ -713,7 +719,7 @@
 
               <div class="checkout-badge-card">
                 <p class="eyebrow">Servicio</p>
-                <h3>Checkout listo para ecommerce</h3>
+                <h3>Flujo de pago listo para ecommerce</h3>
                 <p>La informacion de esta vista alimenta automaticamente la factura, el PDF y el historial.</p>
               </div>
             </div>
@@ -721,8 +727,8 @@
 
           <div class="form-section">
             <div class="section-heading">
-              <p class="eyebrow">Perks</p>
-              <h3>Promociones, rewards y muestras</h3>
+              <p class="eyebrow">Beneficios</p>
+              <h3>Promociones, recompensas y muestras</h3>
             </div>
 
             <div class="form-grid">
@@ -737,7 +743,7 @@
               </label>
 
               <div class="checkout-badge-card checkout-badge-card--reward">
-                <p class="eyebrow">Beauty rewards</p>
+                <p class="eyebrow">Recompensas</p>
                 <h3 id="loyaltyTierLabel">Insider</h3>
                 <p id="loyaltyPointsLabel">0 puntos disponibles.</p>
                 <p class="reward-note" id="loyaltyRewardLabel">Beauty Cash disponible: $0.00</p>
@@ -764,7 +770,7 @@
       <div class="screen-header reveal">
         <div>
           <p class="eyebrow">Factura</p>
-          <h2>Vista premium para entregar al cliente o descargar en PDF con formato profesional.</h2>
+          <h2>Vista profesional para entregar al cliente o descargar en PDF con formato comercial.</h2>
         </div>
         <div class="screen-actions">
           <button class="btn btn--secondary" type="button" id="payNowButton">Pagar ahora</button>
@@ -779,7 +785,7 @@
               <div class="invoice-paper__logo-badge" aria-hidden="true">ML</div>
               <div>
                 <p class="invoice-paper__eyebrow">Makeup by Lala</p>
-                <p class="invoice-paper__subtitle">Beauty boutique invoice</p>
+                <p class="invoice-paper__subtitle">Factura comercial de belleza</p>
               </div>
             </div>
 
@@ -799,7 +805,7 @@
                   <strong id="invoicePreviewPayment">Metodo pendiente</strong>
                 </p>
               </div>
-              <div class="invoice-status" id="invoiceStatusBadge">Draft</div>
+            <div class="invoice-status" id="invoiceStatusBadge">Borrador</div>
             </div>
           </div>
 
@@ -899,7 +905,7 @@
 
             <div class="info-card">
               <span>Informacion de pago</span>
-              <strong id="invoiceStatusText">Draft</strong>
+              <strong id="invoiceStatusText">Borrador</strong>
               <p id="invoicePaidDate">Pendiente</p>
               <p id="invoiceEarnedPoints">0</p>
               <p id="invoiceTierStatus">Insider</p>
@@ -908,7 +914,7 @@
             <div class="invoice-signature-card">
               <span>Firma</span>
               <strong>Makeup by Lala</strong>
-              <p>Beauty boutique studio</p>
+              <p>Estudio boutique de belleza</p>
             </div>
           </div>
         </article>
@@ -921,7 +927,7 @@
             <strong id="invoiceItemCount">0</strong>
           </div>
           <div class="summary-actions">
-            <button class="btn btn--primary" type="button" id="invoiceCheckoutButton">Editar checkout</button>
+            <button class="btn btn--primary" type="button" id="invoiceCheckoutButton">Editar pago</button>
             <button class="btn btn--ghost" type="button" id="invoiceCatalogButton">Agregar mas productos</button>
           </div>
         </aside>
@@ -932,28 +938,28 @@
       <div class="screen-header reveal">
         <div>
           <p class="eyebrow">Envios</p>
-          <h2>Fulfillment con opciones modernas: standard, same-day, pickup y cobertura latina.</h2>
+          <h2>Logistica con opciones modernas: estandar, entrega prioritaria, retiro y cobertura regional.</h2>
         </div>
         <button class="btn btn--ghost" type="button" data-screen-target="supportScreen">Ir a soporte</button>
       </div>
 
       <div class="shipping-overview reveal">
         <article class="feature-card">
-          <p class="eyebrow">Standard shipping</p>
+          <p class="eyebrow">Envio estandar</p>
           <h3>Ideal para pedidos normales</h3>
           <p>Entrega estimada con seguimiento digital y envio gratis en compras elegibles.</p>
         </article>
 
         <article class="feature-card">
-          <p class="eyebrow">Same-day delivery</p>
+          <p class="eyebrow">Entrega prioritaria</p>
           <h3>Rapido para compras urgentes</h3>
           <p>Preparacion prioritaria para pedidos locales con ventana de entrega acelerada.</p>
         </article>
 
         <article class="feature-card">
-          <p class="eyebrow">Buy online &amp; pick up</p>
+          <p class="eyebrow">Compra y retiro</p>
           <h3>Retira sin costo</h3>
-          <p>Recoge en studio o curbside pickup para una experiencia mas flexible y moderna.</p>
+          <p>Recoge en estudio o usa retiro rapido para una experiencia mas flexible y moderna.</p>
         </article>
       </div>
 
@@ -1001,7 +1007,7 @@
       <div class="screen-header reveal">
         <div>
           <p class="eyebrow">Soporte</p>
-          <h2>Ayuda, contacto, pedidos y recomendaciones para una experiencia de compra mas seria.</h2>
+          <h2>Ayuda, contacto, pedidos y recomendaciones para una experiencia de compra mas solida y confiable.</h2>
         </div>
         <button class="btn btn--ghost" type="button" data-screen-target="catalogScreen">Volver al catalogo</button>
       </div>
@@ -1020,7 +1026,7 @@
         </article>
 
         <article class="support-card">
-          <p class="eyebrow">Beauty concierge</p>
+          <p class="eyebrow">Asesoria experta</p>
           <h3>Asesoria personalizada</h3>
           <p>Ayuda para elegir tonos, rutinas de skincare, regalos y recomendaciones por categoria.</p>
         </article>
@@ -1034,7 +1040,7 @@
 
         <details class="faq-item">
           <summary>Puedo guardar favoritos antes de comprar?</summary>
-          <p>Si. La vista de loves te permite guardar productos y retomarlos despues sin perderlos.</p>
+          <p>Si. La vista de favoritos te permite guardar productos y retomarlos despues sin perderlos.</p>
         </details>
 
         <details class="faq-item">
@@ -1050,6 +1056,51 @@
     </section>
   </main>
 
+  <footer class="site-footer">
+    <div class="site-footer__grid">
+      <section class="footer-card">
+        <p class="eyebrow">Makeup by Lala</p>
+        <h3>Boutique digital con presencia de marca, orden comercial y experiencia de compra fluida.</h3>
+        <p>El proyecto integra catalogo, carrito, pagos, historial, soporte, envios y factura PDF en una sola tienda online.</p>
+      </section>
+
+      <section class="footer-card">
+        <p class="eyebrow">Compra</p>
+        <div class="footer-links">
+          <button class="btn btn--ghost btn--small" type="button" data-screen-target="catalogScreen">Explorar catalogo</button>
+          <button class="btn btn--ghost btn--small" type="button" data-screen-target="brandsScreen">Ver marcas</button>
+          <button class="btn btn--ghost btn--small" type="button" data-screen-target="cartScreen">Abrir carrito</button>
+          <button class="btn btn--ghost btn--small" type="button" data-screen-target="invoiceScreen">Revisar factura</button>
+        </div>
+      </section>
+
+      <section class="footer-card">
+        <p class="eyebrow">Atencion</p>
+        <ul class="footer-list">
+          <li>Soporte: support@makeupbylala.com</li>
+          <li>WhatsApp: +1 (809) 555-0199</li>
+          <li>Horario: lunes a sabado, 9:00 AM - 7:00 PM</li>
+          <li>Cobertura: RD, Puerto Rico y seleccion LATAM</li>
+        </ul>
+      </section>
+
+      <section class="footer-card">
+        <p class="eyebrow">Confianza</p>
+        <ul class="footer-list">
+          <li>Catalogo con productos, precios e imagenes reales.</li>
+          <li>Base de datos local persistente para pedidos y facturas.</li>
+          <li>Carrito multiproducto con promociones y muestras.</li>
+          <li>Factura PDF lista para entregar al cliente.</li>
+        </ul>
+      </section>
+    </div>
+
+    <div class="site-footer__bar">
+      <p>Makeup by Lala | Tienda online de belleza con identidad premium.</p>
+      <p>Interfaz optimizada para celular, tablet, laptop y escritorio.</p>
+    </div>
+  </footer>
+
   <div class="modal-backdrop" id="quickViewModal" hidden>
     <div class="quick-view" role="dialog" aria-modal="true" aria-labelledby="quickViewTitle">
       <button class="modal-close" type="button" data-close-modal aria-label="Cerrar vista rapida">+</button>
@@ -1059,27 +1110,27 @@
       </div>
 
       <div class="quick-view__body">
-        <p class="product-card__brand" id="quickViewBrand">Brand</p>
+        <p class="product-card__brand" id="quickViewBrand">Marca</p>
         <h3 id="quickViewTitle">Producto</h3>
         <p class="quick-view__description" id="quickViewDescription">Descripcion del producto.</p>
 
         <div class="quick-view__rating">
           <strong id="quickViewPrice">$0.00</strong>
-          <span id="quickViewRating">4.8 | 0 reviews</span>
+          <span id="quickViewRating">4.8 | 0 resenas</span>
         </div>
 
         <div class="quick-view__meta">
-          <span id="quickViewCategory">Beauty</span>
-          <span id="quickViewBadge">Top pick</span>
+          <span id="quickViewCategory">Categoria</span>
+          <span id="quickViewBadge">Destacado</span>
         </div>
 
         <label class="toggle-row toggle-row--card">
           <input type="checkbox" id="quickViewAutoReplenish">
-          <span>Activar Auto-Replenish con 5% de ahorro si aplica</span>
+          <span>Activar reposicion automatica con 5% de ahorro si aplica</span>
         </label>
 
         <div class="quick-view__actions">
-          <button class="btn btn--ghost" type="button" id="quickViewLoveButton">Guardar en loves</button>
+          <button class="btn btn--ghost" type="button" id="quickViewLoveButton">Guardar en favoritos</button>
           <button class="btn btn--primary" type="button" id="quickViewAddButton">Agregar al carrito</button>
         </div>
 
@@ -1097,6 +1148,6 @@
   <script src="./scripts/catalog-extra-data.js?v=20260407-brandfilter"></script>
   <script src="./scripts/catalog-data.js?v=20260407-brandfilter"></script>
   <script src="./scripts/db.js?v=20260407-brandfilter"></script>
-  <script src="./scripts/app.js?v=20260408-sephora-experience"></script>
+  <script src="./scripts/app.js?v=20260408-professional-polish"></script>
 </body>
 </html>
