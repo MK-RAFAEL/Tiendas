@@ -15,7 +15,7 @@
     rel="stylesheet"
   >
   <link rel="icon" type="image/jpeg" href="./assets/images/hero-products.jpg">
-  <link rel="stylesheet" href="./styles/style.css">
+  <link rel="stylesheet" href="./styles/style.css?v=20260407-brandfilter">
 </head>
 <body>
   <div class="site-glow site-glow--one" aria-hidden="true"></div>
@@ -305,6 +305,13 @@
             <label class="input-shell input-shell--search">
               <span>Buscar</span>
               <input type="search" id="catalogSearch" placeholder="Busca marcas, productos, categorias o subcategorias">
+            </label>
+
+            <label class="input-shell">
+              <span>Marca</span>
+              <select id="catalogBrandFilter">
+                <option value="all">Todas las marcas</option>
+              </select>
             </label>
 
             <label class="input-shell">
@@ -925,9 +932,11 @@
 
   <div class="toast" id="toast" aria-live="polite"></div>
 
-  <script src="./scripts/sephora-real-data.js"></script>
-  <script src="./scripts/catalog-data.js"></script>
-  <script src="./scripts/db.js"></script>
-  <script src="./scripts/app.js"></script>
+  <script src="./scripts/sephora-real-data.js?v=20260407-brandfilter"></script>
+  <script src="./scripts/sephora-real-extra-data.js?v=20260407-brandfilter"></script>
+  <script src="./scripts/catalog-extra-data.js?v=20260407-brandfilter"></script>
+  <script src="./scripts/catalog-data.js?v=20260407-brandfilter"></script>
+  <script src="./scripts/db.js?v=20260407-brandfilter"></script>
+  <script src="./scripts/app.js?v=20260407-brandfilter"></script>
 </body>
 </html>

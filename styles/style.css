@@ -544,8 +544,12 @@ textarea {
 
 .catalog-controls {
   display: grid;
-  grid-template-columns: 1.5fr 0.5fr;
+  grid-template-columns: minmax(0, 1.35fr) minmax(220px, 0.85fr) minmax(200px, 0.65fr);
   gap: 14px;
+}
+
+.input-shell--search {
+  min-width: 0;
 }
 
 .input-shell,
@@ -1325,6 +1329,14 @@ textarea {
   .form-grid,
   .invoice-grid {
     grid-template-columns: 1fr;
+  }
+
+  .catalog-controls {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .input-shell--search {
+    grid-column: 1 / -1;
   }
 
   .hero-media__card--tall {

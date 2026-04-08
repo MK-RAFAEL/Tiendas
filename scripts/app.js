@@ -1,5 +1,13 @@
 ﻿const products = Array.isArray(window.catalogProducts) ? window.catalogProducts : [];
 const productMap = new Map(products.map((product) => [product.id, product]));
+const availableBrands = [...new Set(products.map((product) => product.brand).filter(Boolean))]
+  .sort((left, right) => left.localeCompare(right));
+const availableBrandSet = new Set(availableBrands);
+const brandProductCounts = products.reduce((counts, product) => {
+  if (!product.brand) return counts;
+  counts[product.brand] = (counts[product.brand] || 0) + 1;
+  return counts;
+}, {});
 const storageKey = "makeupByLalaStoreState";
 let catalogVisibleCount = 24;
 let catalogSearchDebounceId = 0;
@@ -190,6 +198,7 @@ const dom = {
   categoryButtons: [...document.querySelectorAll("[data-category-filter]")],
   catalogGrid: document.getElementById("catalogGrid"),
   catalogSearch: document.getElementById("catalogSearch"),
+  catalogBrandFilter: document.getElementById("catalogBrandFilter"),
   catalogSort: document.getElementById("catalogSort"),
   clearCatalogFilters: document.getElementById("clearCatalogFilters"),
   catalogSummary: document.getElementById("catalogSummary"),
@@ -444,6 +453,7 @@ function createDefaultState() {
     activeScreen: "homeScreen",
     filters: {
       category: "all",
+      brand: "all",
       search: "",
       sort: "featured"
     },
@@ -538,6 +548,10 @@ function loadState() {
       .slice(0, 12);
 
     merged.activeScreen = defaults.activeScreen;
+
+    if (!merged.filters.brand || (merged.filters.brand !== "all" && !availableBrandSet.has(merged.filters.brand))) {
+      merged.filters.brand = defaults.filters.brand;
+    }
 
     const shippingAliases = {
       express: "same-day"
@@ -670,12 +684,27 @@ function setCategoryFilter(category) {
   renderCatalog();
 }
 
+function setBrandFilter(brand) {
+  const nextBrand = brand === "all" || availableBrandSet.has(brand) ? brand : "all";
+  state.filters.brand = nextBrand;
+  resetCatalogVisibleCount();
+  if (dom.catalogBrandFilter) {
+    dom.catalogBrandFilter.value = nextBrand;
+  }
+  saveState();
+  renderCatalog(true);
+}
+
 function clearFilters() {
   state.filters.category = "all";
+  state.filters.brand = "all";
   state.filters.search = "";
   state.filters.sort = "featured";
   resetCatalogVisibleCount();
   dom.catalogSearch.value = "";
+  if (dom.catalogBrandFilter) {
+    dom.catalogBrandFilter.value = "all";
+  }
   dom.catalogSort.value = "featured";
   setCategoryFilter("all");
 }
@@ -770,6 +799,10 @@ function applyFiltersAndSort() {
 
   if (state.filters.category !== "all") {
     result = result.filter((product) => product.category === state.filters.category);
+  }
+
+  if (state.filters.brand !== "all") {
+    result = result.filter((product) => product.brand === state.filters.brand);
   }
 
   if (searchValue) {
@@ -1157,8 +1190,11 @@ function renderCatalog(force = false) {
   const filteredProducts = applyFiltersAndSort();
   const visibleProducts = filteredProducts.slice(0, catalogVisibleCount);
   const remainingProducts = Math.max(0, filteredProducts.length - visibleProducts.length);
+  const activeBrandLabel = state.filters.brand !== "all"
+    ? ` Marca activa: ${state.filters.brand}.`
+    : "";
 
-  dom.catalogSummary.textContent = `${visibleProducts.length} productos visibles de ${filteredProducts.length} resultados y ${products.length} disponibles.`;
+  dom.catalogSummary.textContent = `${visibleProducts.length} productos visibles de ${filteredProducts.length} resultados y ${products.length} disponibles.${activeBrandLabel}`;
 
   if (!filteredProducts.length) {
     dom.catalogGrid.innerHTML = `
@@ -1187,6 +1223,29 @@ function renderCatalog(force = false) {
       ? `Cargar ${Math.min(getCatalogBatchSize(), remainingProducts)} productos mas`
       : "Catalogo completo";
   }
+}
+
+function populateBrandOptions() {
+  if (!dom.catalogBrandFilter) return;
+
+  const fragment = document.createDocumentFragment();
+  const defaultOption = document.createElement("option");
+  defaultOption.value = "all";
+  defaultOption.textContent = "Todas las marcas";
+  fragment.appendChild(defaultOption);
+
+  availableBrands.forEach((brand) => {
+    const option = document.createElement("option");
+    option.value = brand;
+    option.textContent = `${brand} (${brandProductCounts[brand] || 0})`;
+    fragment.appendChild(option);
+  });
+
+  dom.catalogBrandFilter.innerHTML = "";
+  dom.catalogBrandFilter.appendChild(fragment);
+  dom.catalogBrandFilter.value = state.filters.brand === "all" || availableBrandSet.has(state.filters.brand)
+    ? state.filters.brand
+    : "all";
 }
 
 function renderLoves(force = false) {
@@ -1898,6 +1957,9 @@ function applyLoadedState(loadedState, options = {}) {
   state.loyalty.points = Math.max(0, Number(state.loyalty.points) || 0);
   state.loyalty.lifetimeSpend = Math.max(0, Number(state.loyalty.lifetimeSpend) || 0);
   state.loyalty.tier = getTierFromSpend(state.loyalty.lifetimeSpend);
+  state.filters.brand = state.filters.brand === "all" || availableBrandSet.has(state.filters.brand)
+    ? state.filters.brand
+    : "all";
   state.checkout.promoCode = normalizeCode(state.checkout.promoCode);
   state.checkout.appliedPromoCode = normalizeCode(state.checkout.appliedPromoCode);
   state.checkout.sampleIds = Array.isArray(state.checkout.sampleIds)
@@ -2554,6 +2616,10 @@ function bindEvents() {
     renderCatalog(true);
   });
 
+  dom.catalogBrandFilter?.addEventListener("change", (event) => {
+    setBrandFilter(event.target.value);
+  });
+
   dom.clearCatalogFilters.addEventListener("click", clearFilters);
   dom.catalogLoadMore?.addEventListener("click", showMoreCatalogProducts);
 
@@ -2664,8 +2730,12 @@ function hydrateUIFromState() {
   document.body.classList.toggle("performance-lite", performanceMode.lite);
   resetCatalogVisibleCount();
   populateCountryOptions();
+  populateBrandOptions();
   syncCheckoutForm();
   dom.catalogSearch.value = state.filters.search;
+  if (dom.catalogBrandFilter) {
+    dom.catalogBrandFilter.value = state.filters.brand;
+  }
   dom.catalogSort.value = state.filters.sort;
   setCategoryFilter(state.filters.category);
   renderShippingCountries();

@@ -46,8 +46,19 @@ const fallbackImages = {
   cleanser: "assets/images/skincare-flatlay.jpg",
   mask: "assets/images/mask-treatment.jpg",
   eyecare: "assets/images/showcase-detail.jpg",
+  toner: "assets/images/catalog-serum.jpg",
+  essence: "assets/images/catalog-serum.jpg",
+  exfoliator: "assets/images/mask-treatment.jpg",
+  faceoil: "assets/images/catalog-drops.jpg",
+  acnecare: "assets/images/skincare-flatlay.jpg",
   sunscreen: "assets/images/sun-care.jpg",
-  tool: "assets/images/beauty-tools.jpg"
+  tool: "assets/images/beauty-tools.jpg",
+  sponge: "assets/images/beauty-tools.jpg",
+  brush: "assets/images/catalog-tool.jpg",
+  curler: "assets/images/beauty-tools.jpg",
+  tweezers: "assets/images/beauty-tools.jpg",
+  sharpener: "assets/images/beauty-tools.jpg",
+  brushcleaner: "assets/images/catalog-tool.jpg"
 };
 
 const localImagePools = {
@@ -140,8 +151,19 @@ const descriptionMap = {
   cleanser: "Limpiador de uso diario que equilibra el catalogo entre color y cuidado.",
   mask: "Mascara de tratamiento para sumar experiencias spa y rituales de belleza.",
   eyecare: "Cuidado del contorno de ojos para una seleccion de tratamiento mas premium.",
+  toner: "Tonico o locion de preparacion para rutinas de cuidado mas completas y profesionales.",
+  essence: "Esencia ligera para reforzar hidratacion y capas de skincare inspiradas en Sephora.",
+  exfoliator: "Exfoliante para renovar textura, luminosidad y sensacion de piel pulida.",
+  faceoil: "Aceite facial para sellar hidratacion y elevar la percepcion premium del skincare.",
+  acnecare: "Tratamiento enfocado en imperfecciones para una tienda beauty mas completa.",
   sunscreen: "Proteccion solar para venta online con enfoque en cuidado y uso diario.",
-  tool: "Herramienta beauty para complementar aplicaciones y mejorar la experiencia de compra."
+  tool: "Herramienta beauty para complementar aplicaciones y mejorar la experiencia de compra.",
+  sponge: "Esponja de maquillaje para mejorar aplicacion, acabado y control de producto.",
+  brush: "Brocha profesional para rostro u ojos pensada para una experiencia de compra mas completa.",
+  curler: "Herramienta para levantar pestañas y complementar la categoria de ojos.",
+  tweezers: "Accesorio de precision para cejas y detalles dentro del universo beauty.",
+  sharpener: "Sacapuntas cosmetico para liners y crayons en una tienda mas parecida a Sephora.",
+  brushcleaner: "Cuidado de brochas y herramientas para una rutina mas completa y profesional."
 };
 
 const normalizeKey = (value) => String(value).toLowerCase().replace(/[^a-z0-9]+/g, "");
@@ -152,7 +174,7 @@ const getPoolImage = (category, subcategoryKey, index) => {
   return specific || pool[index % pool.length] || fallbackImages.default;
 };
 
-const catalogSeed = [
+const baseCatalogSeed = [
   ["HAUS LABS BY LADY GAGA", "Triclone Skin Tech Medium Coverage Foundation with Fermented Arnica", "makeup", "Foundation", 52.0, "$52.00", "assets/images/products/haus-labs-foundation.jpg"],
   ["Armani Beauty", "Luminous Silk Natural Glow Blurring Liquid Foundation with 24 Hour Wear", "makeup", "Foundation", 48.0, "$48.00 - $69.00", "assets/images/products/armani-luminous-silk.jpg"],
   ["Estee Lauder", "NEW Double Wear Stay-in-Place Lightweight Matte Foundation with 36H Wear", "makeup", "Foundation", 10.0, "$10.00 - $52.00", "assets/images/products/estee-lauder-double-wear.jpg"],
@@ -297,7 +319,15 @@ const catalogSeed = [
   ["Beautyblender", "Original Makeup Sponge", "tools", "Tool", 20.0, "$20.00"]
 ];
 
-const realCatalogData = window.catalogRealData || {};
+const catalogSeed = [
+  ...baseCatalogSeed,
+  ...(Array.isArray(window.catalogSeedExtra) ? window.catalogSeedExtra : [])
+];
+
+const realCatalogData = {
+  ...(window.catalogRealData || {}),
+  ...(window.catalogRealDataExtra || {})
+};
 
 window.catalogProducts = catalogSeed.map((item, index) => {
   const [brand, name, category, subcategory, price, priceLabel, image] = item;
