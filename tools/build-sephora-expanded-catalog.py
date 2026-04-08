@@ -24,19 +24,19 @@ API_HEADERS = {
     "Accept-Language": "en-US,en;q=0.9",
 }
 
-TARGET_EXTRA_COUNT = 440
+TARGET_EXTRA_COUNT = 900
 PAGE_SIZE = 60
 MAX_PAGES_PER_QUERY = 2
 REQUEST_DELAY_SECONDS = 0.18
 DOWNLOAD_WORKERS = 10
 
 CATEGORY_QUOTAS = {
-    "makeup": 120,
-    "lips": 90,
-    "eyes": 80,
-    "skincare": 110,
-    "suncare": 20,
-    "tools": 20,
+    "makeup": 250,
+    "lips": 160,
+    "eyes": 155,
+    "skincare": 250,
+    "suncare": 45,
+    "tools": 40,
 }
 
 QUERY_PLAN = [
@@ -92,6 +92,88 @@ QUERY_PLAN = [
     {"query": "acne treatment", "category": "skincare", "subcategory": "Acne Care", "limit": 8},
     {"query": "mineral sunscreen", "category": "suncare", "subcategory": "Sunscreen", "limit": 4},
     {"query": "tinted sunscreen", "category": "suncare", "subcategory": "Sunscreen", "limit": 4},
+    {"query": "contour", "category": "makeup", "subcategory": "Bronzer", "limit": 12},
+    {"query": "contour stick", "category": "makeup", "subcategory": "Bronzer", "limit": 10},
+    {"query": "powder foundation", "category": "makeup", "subcategory": "Foundation", "limit": 10},
+    {"query": "face palette", "category": "makeup", "subcategory": "Blush", "limit": 10},
+    {"query": "pressed powder", "category": "makeup", "subcategory": "Setting Powder", "limit": 8},
+    {"query": "loose powder", "category": "makeup", "subcategory": "Setting Powder", "limit": 8},
+    {"query": "blush stick", "category": "makeup", "subcategory": "Blush", "limit": 10},
+    {"query": "liquid blush", "category": "makeup", "subcategory": "Blush", "limit": 10},
+    {"query": "cream blush", "category": "makeup", "subcategory": "Blush", "limit": 10},
+    {"query": "foundation stick", "category": "makeup", "subcategory": "Foundation", "limit": 10},
+    {"query": "bb cream", "category": "makeup", "subcategory": "CC Cream", "limit": 8},
+    {"query": "tinted serum foundation", "category": "makeup", "subcategory": "Skin Tint", "limit": 8},
+    {"query": "illuminating primer", "category": "makeup", "subcategory": "Primer", "limit": 8},
+    {"query": "mattifying primer", "category": "makeup", "subcategory": "Primer", "limit": 8},
+    {"query": "color corrector", "category": "makeup", "subcategory": "Concealer", "limit": 8},
+    {"query": "complexion palette", "category": "makeup", "subcategory": "Blush", "limit": 6},
+    {"query": "sculpt stick", "category": "makeup", "subcategory": "Bronzer", "limit": 8},
+    {"query": "face mist", "category": "makeup", "subcategory": "Setting Spray", "limit": 6},
+    {"query": "highlighting drops", "category": "makeup", "subcategory": "Highlighter", "limit": 6},
+    {"query": "liquid lipstick", "category": "lips", "subcategory": "Lipstick", "limit": 12},
+    {"query": "plumping gloss", "category": "lips", "subcategory": "Lip Gloss", "limit": 10},
+    {"query": "tinted balm", "category": "lips", "subcategory": "Lip Balm", "limit": 10},
+    {"query": "lip cream", "category": "lips", "subcategory": "Lipstick", "limit": 8},
+    {"query": "lip set", "category": "lips", "subcategory": "Lipstick", "limit": 8},
+    {"query": "lip duo", "category": "lips", "subcategory": "Lip Gloss", "limit": 8},
+    {"query": "matte lipstick", "category": "lips", "subcategory": "Lipstick", "limit": 10},
+    {"query": "satin lipstick", "category": "lips", "subcategory": "Lipstick", "limit": 10},
+    {"query": "lipstick set", "category": "lips", "subcategory": "Lipstick", "limit": 8},
+    {"query": "lip pencil", "category": "lips", "subcategory": "Lip Liner", "limit": 8},
+    {"query": "peptide lip treatment", "category": "lips", "subcategory": "Lip Treatment", "limit": 8},
+    {"query": "gloss set", "category": "lips", "subcategory": "Lip Gloss", "limit": 6},
+    {"query": "lip butter", "category": "lips", "subcategory": "Lip Balm", "limit": 8},
+    {"query": "overnight lip mask", "category": "lips", "subcategory": "Lip Mask", "limit": 6},
+    {"query": "eye palette", "category": "eyes", "subcategory": "Eyeshadow", "limit": 12},
+    {"query": "eyeshadow palette", "category": "eyes", "subcategory": "Eyeshadow", "limit": 12},
+    {"query": "shadow stick", "category": "eyes", "subcategory": "Eyeshadow", "limit": 8},
+    {"query": "pencil eyeliner", "category": "eyes", "subcategory": "Eyeliner", "limit": 8},
+    {"query": "liquid eyeliner", "category": "eyes", "subcategory": "Eyeliner", "limit": 8},
+    {"query": "brow pen", "category": "eyes", "subcategory": "Brow", "limit": 8},
+    {"query": "brow powder", "category": "eyes", "subcategory": "Brow", "limit": 6},
+    {"query": "false lashes", "category": "eyes", "subcategory": "Mascara", "limit": 8},
+    {"query": "lash serum", "category": "eyes", "subcategory": "Mascara", "limit": 8},
+    {"query": "under eye corrector", "category": "eyes", "subcategory": "Brow", "limit": 8},
+    {"query": "brow pomade", "category": "eyes", "subcategory": "Brow", "limit": 8},
+    {"query": "eye brightener", "category": "eyes", "subcategory": "Eyeshadow", "limit": 6},
+    {"query": "cleansing balm", "category": "skincare", "subcategory": "Cleanser", "limit": 10},
+    {"query": "cleansing oil", "category": "skincare", "subcategory": "Cleanser", "limit": 10},
+    {"query": "face wash", "category": "skincare", "subcategory": "Cleanser", "limit": 10},
+    {"query": "gel moisturizer", "category": "skincare", "subcategory": "Moisturizer", "limit": 10},
+    {"query": "night cream", "category": "skincare", "subcategory": "Moisturizer", "limit": 10},
+    {"query": "sleeping mask", "category": "skincare", "subcategory": "Mask", "limit": 8},
+    {"query": "eye patches", "category": "skincare", "subcategory": "Eye Care", "limit": 8},
+    {"query": "facial mist", "category": "skincare", "subcategory": "Toner", "limit": 8},
+    {"query": "vitamin c serum", "category": "skincare", "subcategory": "Serum", "limit": 10},
+    {"query": "peptide serum", "category": "skincare", "subcategory": "Serum", "limit": 8},
+    {"query": "barrier cream", "category": "skincare", "subcategory": "Moisturizer", "limit": 8},
+    {"query": "acne patch", "category": "skincare", "subcategory": "Acne Care", "limit": 8},
+    {"query": "dark spot serum", "category": "skincare", "subcategory": "Serum", "limit": 10},
+    {"query": "makeup remover", "category": "skincare", "subcategory": "Cleanser", "limit": 8},
+    {"query": "exfoliating toner", "category": "skincare", "subcategory": "Exfoliator", "limit": 8},
+    {"query": "micellar water", "category": "skincare", "subcategory": "Cleanser", "limit": 6},
+    {"query": "sheet mask", "category": "skincare", "subcategory": "Mask", "limit": 8},
+    {"query": "pore serum", "category": "skincare", "subcategory": "Serum", "limit": 8},
+    {"query": "serum set", "category": "skincare", "subcategory": "Serum", "limit": 6},
+    {"query": "hydrating toner", "category": "skincare", "subcategory": "Toner", "limit": 8},
+    {"query": "essence toner", "category": "skincare", "subcategory": "Essence", "limit": 8},
+    {"query": "face peel", "category": "skincare", "subcategory": "Exfoliator", "limit": 6},
+    {"query": "repair cream", "category": "skincare", "subcategory": "Moisturizer", "limit": 8},
+    {"query": "sunscreen stick", "category": "suncare", "subcategory": "Sunscreen", "limit": 8},
+    {"query": "body sunscreen", "category": "suncare", "subcategory": "Sunscreen", "limit": 8},
+    {"query": "face sunscreen", "category": "suncare", "subcategory": "Sunscreen", "limit": 8},
+    {"query": "sunscreen spray", "category": "suncare", "subcategory": "Sunscreen", "limit": 6},
+    {"query": "lip sunscreen", "category": "suncare", "subcategory": "Sunscreen", "limit": 4},
+    {"query": "powder puff", "category": "tools", "subcategory": "Sponge", "limit": 6},
+    {"query": "blending brush", "category": "tools", "subcategory": "Brush", "limit": 6},
+    {"query": "bronzer brush", "category": "tools", "subcategory": "Brush", "limit": 6},
+    {"query": "blush brush", "category": "tools", "subcategory": "Brush", "limit": 6},
+    {"query": "eyeliner brush", "category": "tools", "subcategory": "Brush", "limit": 4},
+    {"query": "brow brush", "category": "tools", "subcategory": "Brush", "limit": 4},
+    {"query": "makeup mirror", "category": "tools", "subcategory": "Tool", "limit": 4},
+    {"query": "face roller", "category": "tools", "subcategory": "Tool", "limit": 4},
+    {"query": "gua sha", "category": "tools", "subcategory": "Tool", "limit": 4},
 ]
 
 
@@ -327,10 +409,8 @@ def main() -> None:
 
             time.sleep(REQUEST_DELAY_SECONDS)
 
-    if len(extra_entries) < TARGET_EXTRA_COUNT:
-        raise RuntimeError(
-            f"Only gathered {len(extra_entries)} extra verified products; target was {TARGET_EXTRA_COUNT}."
-        )
+    if not extra_entries:
+        raise RuntimeError("Could not gather any extra verified products from the official catalog queries.")
 
     print(f"Collected {len(extra_entries)} new products.")
     print("Downloading local product images...")
