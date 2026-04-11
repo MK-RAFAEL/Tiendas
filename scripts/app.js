@@ -126,7 +126,7 @@ const statusLabels = {
   Paid: "Pagada"
 };
 
-const categoryLabels = {
+const uiCategoryLabels = {
   makeup: "Maquillaje",
   lips: "Labios",
   eyes: "Ojos",
@@ -635,7 +635,7 @@ function getStatusLabel(status) {
 }
 
 function getCategoryLabel(category, fallback = "Categoria") {
-  return categoryLabels[category] || fallback;
+  return uiCategoryLabels[category] || fallback;
 }
 
 function getNumericSeed(value) {
